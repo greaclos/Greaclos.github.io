@@ -1,11 +1,11 @@
 # Greaclos.github.io
 
-Back-end: FireBase
+Autenticação: FireBase
 
 Front-end: 
 
 Style: BootStrap5.2.2
-Icones: https://feathericons.com
+Icones: ion Icons 
 
-Brain: JavaScript
+Brain: JavaScript/JQuery
  
