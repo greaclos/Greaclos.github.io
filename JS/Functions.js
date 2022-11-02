@@ -35,7 +35,7 @@ function navbar_list(classUl, textLi, classA, func, e_Pai) {
 
     let a = document.createElement("a");
     a.setAttribute("class", `${classA[e]}`);
-    a.setAttribute("href", `#`);
+    a.setAttribute("href", `#${textLi[e]}`);
     a.setAttribute("onclick", func[e]);
     a.innerHTML = `${textLi[e]}`;
 
@@ -106,6 +106,8 @@ const hasNumber = (str) => /[0-9]/.test(str);
 
 //Controla a visualização das Modals
 function control_Modal(modal, comand) {
+  // console.log("comand", comand);
+  // console.log("modal", modal);
   switch (comand) {
     case "open":
       document.getElementById(`button-modal-${modal}`).click();
@@ -426,7 +428,7 @@ function modalAuth(mode) {
       ["class", "type", "id"],
       [
         "w-100 py-2 mb-2 btn btn-outline-danger rounded-3",
-        "submit",
+        "button",
         "logar-wGoogle",
       ],
       `form-${mode}`

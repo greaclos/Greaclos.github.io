@@ -1,6 +1,5 @@
-$(document).ready(() => {
-  //Inicializar as Modals
+document.addEventListener("DOMContentLoaded", () => {
   modalAuth("Registar");
   modalAuth("Entrar");
-  navBar()
+  navBar();
 });
