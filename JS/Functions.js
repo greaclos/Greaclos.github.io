@@ -359,7 +359,7 @@ function modalAuth(mode) {
   if (mode == "Entrar") {
     //Caixa de texto - email
     criarElementoFF(
-      "emailRg",
+      "emailLg",
       ["type", "class", "style", "placeholder"],
       [
         "email",
@@ -373,7 +373,7 @@ function modalAuth(mode) {
 
     //Caixa de texto - Password
     criarElementoFF(
-      "passwordRg",
+      "passwordLg",
       ["type", "minlength", "class", "style", "placeholder"],
       [
         "password",
