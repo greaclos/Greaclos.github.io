@@ -35,7 +35,7 @@ function navbar_list(classUl, textLi, classA, func, e_Pai) {
 
     let a = document.createElement("a");
     a.setAttribute("class", `${classA[e]}`);
-    a.setAttribute("href", `#${textLi[e]}`);
+    a.setAttribute("style", `cursor: pointer;`);
     a.setAttribute("onclick", func[e]);
     a.innerHTML = `${textLi[e]}`;
 
@@ -128,6 +128,8 @@ function control_Modal(modal, comand) {
       break;
   }
 }
+//----------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------
 
 //Components
 
@@ -360,10 +362,13 @@ function modalAuth(mode) {
   //Exclusivo de Entrar
   if (mode == "Entrar") {
     //Caixa de texto - email
+    //
+    criarElemento("div", ["id"], ["alert-email-Entrar"], `form-${mode}`);
     criarElementoFF(
       "emailLg",
-      ["type", "class", "style", "placeholder"],
+      ["required", "type", "class", "style", "placeholder"],
       [
+        "",
         "email",
         "form-control",
         `background-color: ${_tema.form.backText};`,
@@ -374,10 +379,13 @@ function modalAuth(mode) {
     );
 
     //Caixa de texto - Password
+    //
+    criarElemento("div", ["id"], ["alert-password-Entrar"], `form-${mode}`);
     criarElementoFF(
       "passwordLg",
-      ["type", "minlength", "class", "style", "placeholder"],
+      ["required", "type", "minlength", "class", "style", "placeholder"],
       [
+        "",
         "password",
         "6",
         "form-control",
@@ -391,8 +399,12 @@ function modalAuth(mode) {
     //Botão submit
     criarElementoWText(
       "button",
-      ["class", "type"],
-      [`w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.submit}`, "submit"],
+      ["class", "type", "onclick"],
+      [
+        `w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.submit}`,
+        "submit",
+        "login()",
+      ],
       `form-${mode}`,
       "Entrar"
     );
@@ -522,3 +534,33 @@ function navBar(/* state: on / off;  */) {
     "navbarCollapse > div"
   );
 }
+
+//----------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------
+
+// Alert
+
+function alertar(idTarget, message, type) {
+  let Pai = document.querySelector(`#${idTarget}`);
+
+  let wrapper = document.createElement("div");
+  wrapper.setAttribute("class", `alert alert-${type} alert-dismissible`);
+  wrapper.setAttribute("role", "alert");
+
+  let mensagem = document.createElement("div");
+  mensagem.innerHTML = `${message}`;
+
+  wrapper.appendChild(mensagem);
+
+  let botão = document.createElement("button");
+  botão.setAttribute("type", "button");
+  botão.setAttribute("class", "btn-close");
+  botão.setAttribute("data-bs-dismiss", "alert");
+  botão.setAttribute("aria-label", "Close");
+
+  wrapper.appendChild(botão);
+
+  Pai == null ? console.log("Deu pau") : Pai.appendChild(wrapper);
+}
+
+alertar("alert-email-Entrar", "Será que funciona um dia?", "success");

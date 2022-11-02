@@ -16,6 +16,14 @@ function login() {
       }, [2000]);
     })
     .catch((error) => {
-      console.log(error.message);
+      console.log(error.code);
+      validaLogin(error.code)
     });
+}
+
+function validaLogin(code) {
+  if (code == "auth/wrong-password") {
+    alert("Pass erraada")
+  }
+  
 }

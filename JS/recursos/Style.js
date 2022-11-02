@@ -18,16 +18,16 @@
 // 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 
 var _tema = {
-  backColor: "#31c040",
-  textColor: "#fff",
+  backColor: "#fff",
+  textColor: "#000",
   form: {
-    backText: "#aaa",
-    colorText: "#ddd",
-    submit: "bg-primary",
+    backText: "#fff",
+    colorText: "#000",
+    submit: "bg-primary text-light",
     secondaryBtn: "bg-light",
   },
   navBar: {
-    back: "bg-primary",
+    back: "bg-black",
     text: "navbar-dark",
   },
 };
