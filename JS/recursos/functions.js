@@ -17,11 +17,13 @@ function criarElemento(nome, des_Attrs, v_Attrs, e_Pai) {
   PAI.appendChild(elemento);
 }
 
-//classUl - string
-//textLi - array - nomes dos li
-//classLi - array - classe pra cada nome acima citado
-//classA - array -
-//func - função pro onclick (Enviar com "")
+//Cria a lista de navegação, os nomes identificadores das paginas no menu
+//  classUl -   string    [""]      //Classes para a tag Ul
+//  textLi -    array     [""]      //nomes dos li, os titulos que aparecerão na barra
+//  classA -    array     [""]      //classes para cada tag a correspondente aos nomes acima citados
+//  func -                          //função pro onclick (Enviar com "") Ex. "funcao(parametros)"
+//  e_Pai -     string    ""        //id do elemento pai para o elemento (apenas texto, sem #)
+//Ex. navbar_list("navbar-nav ",["Home", "Histórico"],[`nav-link active`, `nav-link disabled`],[" ", " "],"navbarCollapse")
 function navbar_list(classUl, textLi, classA, func, e_Pai) {
   let Pai = document.querySelector(`#${e_Pai}`);
   let numLi = textLi.length;
@@ -101,13 +103,77 @@ const hasUpper = (str) => /[A-Z]/.test(str);
 const hasLower = (str) => /[a-z]/.test(str);
 const hasNumber = (str) => /[0-9]/.test(str);
 
+//Cria a parte direita da barra de navegação, a parte do utilizador (quando estiver logado apenas)
+//  txtOption - Array  [""]         //Array com a lista das opções no dropdown (excepto o Sair que é predefinido)
+//  onClick_fun                     //Array de Funções de onclick para cada elemento da lista acima citado
+//  e_Pai       string ""           //id do elemento pai para a div (apenas texto, sem #)
+//Ex. criarMenuPerfil(["Perfil"],["chamarfunção()"]"navbarCollapse > div")
+function criarMenuPerfil(txtOption, onClick_fun, e_Pai) {
+  const PAI = document.querySelector(`#${e_Pai}`);
+  let n_Options = txtOption.length;
+
+  let li2 = document.createElement("li");
+
+  for (let e = 0; e < n_Options; e++) {
+    let a = document.createElement("a");
+    a.setAttribute("class", "dropdown-item");
+    a.setAttribute("onclick", `${onClick_fun[e]}`);
+    a.innerHTML = txtOption[e];
+
+    li2.appendChild(a);
+  }
+
+  let hr = document.createElement("hr");
+  hr.setAttribute("class", "dropdown-divider");
+  li2.appendChild(hr);
+
+  let sair = document.createElement("a");
+  sair.setAttribute("class", "dropdown-item");
+  sair.setAttribute("onclick", "logOut()");
+  sair.innerHTML = "Sair";
+  li2.appendChild(sair);
+
+  let ul2 = document.createElement(`ul`);
+  ul2.setAttribute("class", "dropdown-menu");
+  ul2.setAttribute("aria-labelledby", "perfilDropM");
+  ul2.appendChild(li2);
+
+  let userID = document.createElement("span");
+  userID.setAttribute("class", "mt-0 mb-0 m-2");
+
+  userID.innerHTML = "@username";
+
+  let aBtn = document.createElement("a");
+  aBtn.setAttribute("class", "nav-link dropdown-toggle mt-0 mb-0 m-2");
+  aBtn.setAttribute("id", "perfilDropM");
+  aBtn.setAttribute("role", "button");
+  aBtn.setAttribute("data-bs-toggle", "dropdown");
+  aBtn.setAttribute("aria-expanded", "false");
+  aBtn.appendChild(userID);
+
+  console.log(aBtn);
+
+  let li = document.createElement(`li`);
+  li.setAttribute("class", "nav-item dropdown");
+  li.appendChild(aBtn);
+  li.appendChild(ul2);
+
+  let ul = document.createElement(`ul`);
+  ul.setAttribute("class", "navbar-nav me-auto");
+  ul.appendChild(li);
+
+  PAI.appendChild(ul);
+}
 //----------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------
 
 //Controla a visualização das Modals
+//  modal   string  "" - se refera a que Modal vai mudar
+//    valores possiveis: "Entrar"/"Registar"
+//  comand  string  "" - se refera ao tipo de ação a executar
+//    valores: "open","close","troca"
+//Ex. controol_Modal("Entrar","open") -  abre a modal de Login (Entrar)
 function control_Modal(modal, comand) {
-  // console.log("comand", comand);
-  // console.log("modal", modal);
   switch (comand) {
     case "open":
       document.getElementById(`button-modal-${modal}`).click();
@@ -134,6 +200,7 @@ function control_Modal(modal, comand) {
 //Components
 
 //Cria as Modals de autenticação (Login e Registo)
+//  mode - se refere ao tipo de Modal ("Entrar"/"Registar")
 function modalAuth(mode) {
   //Botão de ativação
   criarElemento(
@@ -227,6 +294,13 @@ function modalAuth(mode) {
 
   //Exclusivo de Registo
   if (mode == "Registar") {
+    //Alert
+    criarElemento(
+      "div",
+      ["id", "class"],
+      ["alert-Registar", "w-100"],
+      `form-${mode}`
+    );
     // Caixa de texto - Nome
     criarElementoFF(
       "usernameRg",
@@ -330,8 +404,12 @@ function modalAuth(mode) {
     //Botão submit
     criarElementoWText(
       "button",
-      ["class", "type"],
-      [`w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.submit}`, "submit"],
+      ["class", "type", "onclick"],
+      [
+        `w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.submit}`,
+        "submit",
+        "register()",
+      ],
       `form-${mode}`,
       "Inscrever"
     );
@@ -361,9 +439,14 @@ function modalAuth(mode) {
 
   //Exclusivo de Entrar
   if (mode == "Entrar") {
+    //Alert
+    criarElemento(
+      "div",
+      ["id", "class"],
+      ["alert-Entrar", "w-100"],
+      `form-${mode}`
+    );
     //Caixa de texto - email
-    //
-    criarElemento("div", ["id"], ["alert-email-Entrar"], `form-${mode}`);
     criarElementoFF(
       "emailLg",
       ["required", "type", "class", "style", "placeholder"],
@@ -379,8 +462,6 @@ function modalAuth(mode) {
     );
 
     //Caixa de texto - Password
-    //
-    criarElemento("div", ["id"], ["alert-password-Entrar"], `form-${mode}`);
     criarElementoFF(
       "passwordLg",
       ["required", "type", "minlength", "class", "style", "placeholder"],
@@ -422,6 +503,19 @@ function modalAuth(mode) {
       "Inscrever-se"
     );
 
+    //Recuperar palavra-passe
+    criarElementoWText(
+      "div",
+      ["class", "style", "onclick"],
+      [
+        "text-muted w-100 text-center mt-3",
+        `cursor: pointer;`,
+        "recoverPassword()",
+      ],
+      `form-${mode}`,
+      "<a>Recuperar palavra passe</a>"
+    );
+
     //Barra divisoria
     criarElemento("hr", ["class"], ["my-4"], `form-${mode}`);
 
@@ -450,7 +544,10 @@ function modalAuth(mode) {
   }
 }
 
-function navBar(/* state: on / off;  */) {
+//Cria a barra de Navegção
+//  state   string    //on para caso o utilizador esteja logado
+//                    //off para o caso de não haver ninguem loggado
+function navBar(state) {
   //Nav
   criarElemento(
     "nav",
@@ -523,28 +620,49 @@ function navBar(/* state: on / off;  */) {
   );
 
   //Div de Opções do lado direito
-  criarElemento("div", ["class"], ["d-flex"], "navbarCollapse");
+  criarElemento("div", ["class"], ["d-flex "], "navbarCollapse");
 
-  //
-  navbar_list(
-    "navbar-nav me-auto mb-2 mb-md-0",
-    ["Login", "Inscrever-se"],
-    [`nav-link`, `nav-link`],
-    ["control_Modal('Entrar', 'open');", "control_Modal('Registar', 'open');"],
-    "navbarCollapse > div"
-  );
+  if (state == "on") {
+    //
+    criarMenuPerfil(
+      ["Perfil", "Another action"],
+      ["", ""], //onclick
+      "navbarCollapse > div"
+    );
+  } else if (state == "off") {
+    //
+    navbar_list(
+      "navbar-nav me-auto mb-2 mb-md-0",
+      ["Login", "Inscrever-se"],
+      [`nav-link`, `nav-link`],
+      [
+        "control_Modal('Entrar', 'open');",
+        "control_Modal('Registar', 'open');",
+      ],
+      "navbarCollapse > div"
+    );
+  }
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------
 
-// Alert
+// Alerta
 
+//Cria os alestas dentro de divs
+//    devem haver divs no codigo com id "alert-..." exclusivamente para serem usadas pelos alertas
+//  idTarget    string      //se reefere ao id da div alert
+//  meessage    string      //mensagem que aparecerá no alerta
+//  type        string      //tipo de alerta
+//                            success - para alertas de sucesso
+//                            warning - para alertas de aviso
+//                            danger - para alertas de erro
 function alertar(idTarget, message, type) {
   let Pai = document.querySelector(`#${idTarget}`);
 
+  console.log(Pai);
   let wrapper = document.createElement("div");
-  wrapper.setAttribute("class", `alert alert-${type} alert-dismissible`);
+  wrapper.setAttribute("class", `alert alert-${type} mt-3 alert-dismissible`);
   wrapper.setAttribute("role", "alert");
 
   let mensagem = document.createElement("div");
@@ -552,15 +670,47 @@ function alertar(idTarget, message, type) {
 
   wrapper.appendChild(mensagem);
 
-  let botão = document.createElement("button");
-  botão.setAttribute("type", "button");
-  botão.setAttribute("class", "btn-close");
-  botão.setAttribute("data-bs-dismiss", "alert");
-  botão.setAttribute("aria-label", "Close");
+  let btn = document.createElement("button");
+  btn.setAttribute("type", "button");
+  btn.setAttribute("class", "btn-close visually-hidden");
+  btn.setAttribute("data-bs-dismiss", "alert");
+  btn.setAttribute("aria-label", "Close");
 
-  wrapper.appendChild(botão);
+  wrapper.appendChild(btn);
+  Pai.appendChild(wrapper);
 
-  Pai == null ? console.log("Deu pau") : Pai.appendChild(wrapper);
+  setTimeout(() => {
+    btn.click();
+  }, [5000]);
 }
 
-alertar("alert-email-Entrar", "Será que funciona um dia?", "success");
+// Loading
+//Cria a tela de Loadeing e a mostra
+function showLoading() {
+  const Pai = document.querySelector("#loading");
+
+  let modal = document.createElement("div");
+  modal.classList.add("modal", "show", "LOAD");
+  modal.setAttribute("style", "display: block;");
+  modal.setAttribute("data-bs-backdrop", "static");
+  modal.setAttribute("tabindex", "-1");
+  modal.setAttribute("aria-modal", "true");
+
+  let div = document.createElement("div");
+  div.classList.add("loading", "centralizar");
+
+  let img = document.createElement("img");
+  img.setAttribute("src", "media/img/logo.png");
+
+  div.appendChild(img);
+  modal.appendChild(div);
+  Pai.appendChild(modal);
+}
+
+//Remove a tela de loading - chamada logo depois da primeira (show)
+function hideLoading() {
+  const loadings = document.getElementsByClassName("LOAD");
+  if (loadings.length) {
+    loadings[0].remove();
+  }
+}
