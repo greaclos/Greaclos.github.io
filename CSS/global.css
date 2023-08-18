@@ -9,34 +9,51 @@ body {
 }
 
 /* Tela Loading */
-.loading {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 20px;
-}
+  .loading {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 20px;
+  }
 
-.loading img {
-  max-width: 100px;
-  animation-duration: 1000ms;
-  animation-name: rotacion;
-  animation-iteration-count: infinite;
-}
+  .loading img {
+    max-width: 100px;
+    animation-duration: 1000ms;
+    animation-name: rotacion;
+    animation-iteration-count: infinite;
+  }
 
-@keyframes rotacion {
-  0% {
-    transform: rotate(0deg);
+  @keyframes rotacion {
+    0% {
+      transform: rotate(0deg);
+    }
+    40% {
+      transform: rotate(360deg);
+    }
+    50% {
+    }
+    90% {
+      transform: rotate(0deg);
+    }
+    100% {
+    }
   }
-  40% {
-    transform: rotate(360deg);
-  }
-  50% {
-  }
-  90% {
-    transform: rotate(0deg);
-  }
-  100% {
-  }
-}
 /* Tela Loading */
+
+.card.game{
+  background: linear-gradient(80deg,rgb(11, 11, 66),rgb(129, 22, 22));
+  width: 20%;
+}
+
+
+.card.game:hover{
+  background: linear-gradient(80deg,rgb(16, 16, 116),rgb(177, 28, 28));
+  transform: scale(1.011);
+  color: white;
+}
+
+#pernson_dta{
+  border-radius: 5px;
+  min-height: 90vh;
+}

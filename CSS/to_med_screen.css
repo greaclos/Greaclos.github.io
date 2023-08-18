@@ -1,0 +1,37 @@
+@media screen and (max-width: 1000px) {
+  .card.game{
+    width: 30%;
+  }
+  
+}
+
+@media screen and (max-width: 576px) {
+  .card.game{
+    width: 40%;
+  }
+  #pernson_dta{
+    border-radius: 5px;
+    min-height: auto;
+  }
+}
+
+
+@media screen and (max-width: 470px) {
+  .card.game{
+    width: 90%;
+  }
+  #pernson_dta{
+    border-radius: 5px;
+    min-height: auto;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .card.game{
+    width: 87%;
+  }
+  #pernson_dta{
+    border-radius: 5px;
+    min-height: auto;
+  }
+}
