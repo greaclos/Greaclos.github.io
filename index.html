@@ -1,38 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- BootStrap Js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- BootStrap Css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
 
     <!-- Firebase -->
-    <script defer type="module" src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"
+    ></script>
 
     <!-- Firebase Inicialização -->
     <script defer src="JS/firebase/firebase_init.js" type="module"></script>
 
     <!-- Firebase Auth -->
-    <script defer type="module" src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"></script>
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"
+    ></script>
 
     <!-- Firebase  -->
     <script defer src="JS/firebase/auth.js"></script>
 
     <!-- <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-analytics.js"></script> -->
 
-
     <!-- ion Icons -->
-    <script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script
+      defer
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      defer
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
 
     <!-- My Js -->
     <script defer src="JS/recursos/functions.js"></script>
@@ -40,13 +60,13 @@
     <script defer src="JS/recursos/Style.js"></script>
 
     <!-- My Css -->
-    <link rel="stylesheet" href="CSS/global.css">
+    <link rel="stylesheet" href="CSS/global.css" />
+    <link rel="stylesheet" href="CSS/to_med_screen.css" />
 
     <title>Greaclos</title>
+  </head>
 
-</head>
-
-<body>
+  <body class="bg-black" style="color: #cccdb5">
     <!-- Loading -->
     <div id="loading"></div>
 
@@ -56,11 +76,169 @@
     <!-- Barra de Navegação -->
     <div id="nav"></div>
 
+    <!-- Conteúdo -->
+    <div class="mt-5 w-100 bg-danger text-center">publishing</div>
 
-    <div class="h1 mt-5" id="Welcome">Welcome To Greaclos World</div>
+    <div class="w-100 row m-0">
+      <!-- <div class="col-2 bg-danger" id="mythings">Column</div> -->
+      <div class="col-sm p-4 pt-1">
+        <div class="row d-flex justify-content-center">
 
+            <div class="card col-md-1 m-3 game">
+                <div class="card-body">
+                  <h5 class="card-title">Nome do Jogo</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Número de participantes</h6>
+                  <p class="card-text">
+                    Descrição do jogo
+                  </p>
+                  <a href="#" class="card-link">Jogar</a>
+                </div>
+              </div>
 
+              <div class="card col-md-1 m-3 game">
+                <div class="card-body">
+                  <h5 class="card-title">Nome do Jogo</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Número de participantes</h6>
+                  <p class="card-text">
+                    Descrição do jogo
+                  </p>
+                  <a href="#" class="card-link">Jogar</a>
+                </div>
+              </div>
 
-</body>
+              <div class="card col-md-1 m-3 game">
+                <div class="card-body">
+                  <h5 class="card-title">Nome do Jogo</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Número de participantes</h6>
+                  <p class="card-text">
+                    Descrição do jogo
+                  </p>
+                  <a href="#" class="card-link">Jogar</a>
+                </div>
+              </div>
 
+              <div class="card col-md-1 m-3 game">
+                <div class="card-body">
+                  <h5 class="card-title">Nome do Jogo</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Número de participantes</h6>
+                  <p class="card-text">
+                    Descrição do jogo
+                  </p>
+                  <a href="#" class="card-link">Jogar</a>
+                </div>
+              </div>
+
+        </div>
+
+        
+      </div>
+
+      <div class="col-lg-2 bg-secondary" id="pernson_dta">Persinal Data</div>
+    </div>
+
+    <!--   <p>
+      What is Lorem Ipsum?<br />
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+      <br />
+      Lorem Ipsum has been the industry's standard dummy text ever since the<br />
+      What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing
+      and<br />
+      typesetting industry. Lorem Ipsum has been the industry's standard
+      dummy<br />
+      text ever since the 1500s, when an unknown printer took a galley of
+      type<br />
+      and scrambled it to make a type specimen book. It has survived not only<br />
+      five centuries, but also the leap into electronic typesetting,
+      remaining<br />
+      essentially unchanged. It was popularised in the 1960s with the release
+      of<br />
+      Letraset sheets containing Lorem Ipsum passages, and more recently with<br />
+      desktop publishing software like Aldus PageMaker including versions of<br />
+      Lorem Ipsum. Why do we use it? It is a long established fact that a
+      reader<br />
+      will be distracted by the readable content of a page when looking at
+      its<br />
+      layout. The point of using Lorem Ipsum is that it has a more-or-less<br />
+      normal distribution of letters, as opposed to using 'Content here,
+      content<br />
+      here', making it look like readable English. Many desktop publishing<br />
+      packages and web page editors now use Lorem Ipsum as their default
+      model<br />
+      text, and a search for 'lorem ipsum' will uncover many web sites still
+      in<br />
+      their infancy. Various versions have evolved over the years, sometimes
+      by<br />
+      accident, sometimes on purpose (injected humour and the like). Where
+      does<br />
+      it come from? Contrary to popular belief, Lorem Ipsum is not simply
+      random<br />
+      text. It has roots in a piece of classical Latin literature from 45 BC,<br />
+      making it over 2000 years old. Richard McClintock, a Latin professor at<br />
+      Hampden-Sydney College in Virginia, looked up one of the more obscure<br />
+      Latin words, consectetur, from a Lorem Ipsum passage, and going through<br />
+      the cites of the word in classical literature, discovered the
+      undoubtable<br />
+      source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de
+      Finibus<br />
+      Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written
+      in<br />
+      45 BC. This book is a treatise on the theory of ethics, very popular<br />
+      during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum
+      dolor<br />
+      sit amet..", comes from a line in section 1.10.32. The standard chunk
+      of<br />
+      Lorem Ipsum used since the 1500s is reproduced below for those
+      interested.<br />
+      Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by<br />
+      Cicero are also reproduced in their exact original form, accompanied by<br />
+      English versions from the 1914 translation by H. Rackham. 1500s, when
+      an<br />
+      unknown printer took a galley of type and scrambled it to make a type<br />
+      specimen book. It has survived not only five centuries, but also the
+      leap<br />
+      into electronic typesetting, remaining essentially unchanged. It was<br />
+      popularised in the 1960s with the release of Letraset sheets containing<br />
+      Lorem Ipsum passages, and more recently with desktop publishing
+      software<br />
+      like Aldus PageMaker including versions of Lorem Ipsum. Why do we use
+      it?<br />
+      It is a long established fact that a reader will be distracted by the<br />
+      readable content of a page when looking at its layout. The point of
+      using<br />
+      Lorem Ipsum is that it has a more-or-less normal distribution of
+      letters,<br />
+      as opposed to using 'Content here, content here', making it look like<br />
+      readable English. Many desktop publishing packages and web page editors<br />
+      now use Lorem Ipsum as their default model text, and a search for
+      'lorem<br />
+      ipsum' will uncover many web sites still in their infancy. Various<br />
+      versions have evolved over the years, sometimes by accident, sometimes
+      on<br />
+      purpose (injected humour and the like). Where does it come from?
+      Contrary<br />
+      to popular belief, Lorem Ipsum is not simply random text. It has roots
+      in<br />
+      a piece of classical Latin literature from 45 BC, making it over 2000<br />
+      years old. Richard McClintock, a Latin professor at Hampden-Sydney
+      College<br />
+      in Virginia, looked up one of the more obscure Latin words,
+      consectetur,<br />
+      from a Lorem Ipsum passage, and going through the cites of the word in<br />
+      classical literature, discovered the undoubtable source. Lorem Ipsum
+      comes<br />
+      from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum"
+      (The<br />
+      Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a<br />
+      treatise on the theory of ethics, very popular during the Renaissance.
+      The<br />
+      first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a<br />
+      line in section 1.10.32. The standard chunk of Lorem Ipsum used since
+      the<br />
+      1500s is reproduced below for those interested. Sections 1.10.32 and<br />
+      1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also
+      reproduced<br />
+      in their exact original form, accompanied by English versions from the<br />
+      1914 translation by H. Rackham.
+    </p> -->
+  </body>
 </html>
