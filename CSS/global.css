@@ -57,3 +57,23 @@ body {
   border-radius: 5px;
   min-height: 90vh;
 }
+
+.card.jdv{
+  width: 90px;
+  margin: 2px;
+  height: 90px;
+}
+
+
+.card.jdv:hover{
+  background: linear-gradient(80deg,rgb(16, 16, 116),rgb(177, 28, 28));
+  transform: scale(1.011);
+  color: white;
+}
+
+.vez {
+  font-size: 30px;
+  min-width: 50px;
+  /* color: #97f5a4;
+  transform: scale(2); */
+}
