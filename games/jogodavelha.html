@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- BootStrap Js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- BootStrap Css -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+
+    <!-- Firebase -->
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"
+    ></script>
+
+    <!-- Firebase Inicialização -->
+    <script defer src="../JS/firebase/firebase_init.js" type="module"></script>
+
+    <!-- Firebase Auth -->
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"
+    ></script>
+
+    <!-- Firebase  -->
+    <script defer src="../JS/firebase/auth.js"></script>
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-analytics.js"></script> -->
+
+    <!-- ion Icons -->
+    <script
+      defer
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      defer
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
+    <!-- My Js -->
+    <!-- JQuery -->
+    <script defer src="../JS/recursos/Style.js"></script>
+    <script defer src="../JS/recursos/functions.js"></script>
+    <script defer src="../JS/index.js"></script>
+
+    <!-- My Css -->
+    <link rel="stylesheet" href="../CSS/global.css" />
+    <link rel="stylesheet" href="../CSS/to_med_screen.css" />
+  </head>
+
+  <body class="bg-black pt-1">
+    <!-- Loading -->
+    <div id="loading"></div>
+
+    <!-- Modal -->
+    <div id="modal"></div>
+
+    <!-- Barra de Navegação -->
+    <div id="nav"></div>
+
+    <!-- Conteúdo -->
+
+    <div class="mt-5 pt-5" id="Jogo">
+      <div class="p-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="Modal-win"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        ></button>
+
+        <!-- Modal -->
+        <div
+          class="modal"
+          id="staticBackdrop"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+              <div class="modal-body">
+                <h4 class="h4" id="text-win"></h4>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="replay(true)"
+                  >
+                    Recomeçar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="Modal-fecho"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-5 w-100 text-center">
+          <div
+            class="btn btn-secondary pt-0 pb-0 text-center m-1 mt-0 mb-0 text-danger"
+            title="Recomeçar"
+            onclick="replay();"
+          >
+            <svg
+              width="25px"
+              height="25px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 20C9.47362 20 7.22075 18.8289 5.75463 17M12 4C14.9611 4 17.5465 5.60879 18.9297 8M4 12C4 9.47362 5.17107 7.22075 7 5.75463M20 12C20 14.8339 18.5265 17.3236 16.3039 18.7448M19.3 5V8H16.3M8 16.3H5V19.3M16.3 16V19H19.3M4.7002 5H7.7002V8"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="bg-ino w-100">
+          <div class="row d-flex justify-content-center">
+            <div class="card col-md-1 jdv" id="ps-1" onclick="jogada(1);"></div>
+            <div class="card col-md-1 jdv" id="ps-2" onclick="jogada(2);"></div>
+            <div class="card col-md-1 jdv" id="ps-3" onclick="jogada(3);"></div>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="card col-md-1 jdv" id="ps-4" onclick="jogada(4);"></div>
+            <div class="card col-md-1 jdv" id="ps-5" onclick="jogada(5);"></div>
+            <div class="card col-md-1 jdv" id="ps-6" onclick="jogada(6);"></div>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="card col-md-1 jdv" id="ps-7" onclick="jogada(7);"></div>
+            <div class="card col-md-1 jdv" id="ps-8" onclick="jogada(8);"></div>
+            <div class="card col-md-1 jdv" id="ps-9" onclick="jogada(9);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
