@@ -42,12 +42,12 @@ function startTTT() {
     element.addEventListener("mouseover", (e) => {
       e.target.innerHTML =
         tic_tac_toe.symbols.options[tic_tac_toe.symbols.turn_index];
-      console.log(e.target);
+      // console.log(e.target);
     });
 
     element.addEventListener("mouseout", (e) => {
       e.target.innerHTML = "";
-      console.log(e.target);
+      // console.log(e.target);
     });
   });
 }
