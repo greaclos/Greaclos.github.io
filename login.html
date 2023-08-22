@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Greaclos - Login</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <!-- Js BoootStrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="CSS/signin.css" />
+    <link rel="stylesheet" href="CSS/global.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"
+    ></script>
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore-compat.js"
+    ></script>
+  </head>
+
+  <body class="container-lg text-center" style="background: rgb(248, 248, 248)">
+
+    <main>
+      <div
+        id="modal-Entrar"
+        class="modal fade py-5 show"
+        tabindex="-1"
+        aria-labelledby="modalEntrar-Label"
+        role="dialog"
+        aria-modal="true"
+        style="display: block"
+      >
+        <div id="modalEntrar-dialog" class="modal-dialog" role="document">
+          <div
+            id="modalEntrar-content"
+            class="modal-content rounded-4 shadow"
+            style="background-color: #fff; color: #000"
+          >
+            <div
+              id="modalEntrar-content-header"
+              class="modal-header p-5 pb-4 border-bottom-0"
+            >
+              <h1 class="fw-bold mb-0 fs-2">Entrar na Greaclos</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="modal-close-Entrar"
+              ></button>
+            </div>
+            <div id="modalEntrar-body" class="modal-body p-5 pt-0">
+              <form id="form-Entrar" class="">
+                <div id="alert-Entrar" class="w-100"></div>
+                <div class="form-floating mb-3">
+                  <input
+                    required=""
+                    type="email"
+                    class="form-control"
+                    style="background-color: #fff"
+                    placeholder="E-mail"
+                    id="emailLg"
+                  /><label for="emailLg">E-mail</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input
+                    required=""
+                    type="password"
+                    minlength="6"
+                    class="form-control"
+                    style="background-color: #fff"
+                    placeholder="Palavra-passe"
+                    id="passwordLg"
+                  /><label for="passwordLg">Palavra-passe</label>
+                </div>
+                <button
+                  class="w-100 mb-2 btn btn-lg rounded-3 bg-primary text-light"
+                  type="button"
+                  onclick="login()"
+                >
+                  Entrar</button
+                ><button
+                  class="w-100 mb-2 btn btn-lg rounded-3 bg-light"
+                  type="button"
+                  onclick="navigate('register.html')"
+                >
+                  Inscrever-se
+                </button>
+                <div
+                  class="text-muted w-100 text-center mt-3"
+                  style="cursor: pointer"
+                  onclick="recoverPassword()"
+                >
+                  <a>Recuperar palavra passe</a>
+                </div>
+                <hr class="my-4" />
+                <h2 class="fs-5 fw-bold mb-3">Ou entre com</h2>
+                <button
+                  class="w-100 py-2 mb-2 btn btn-outline-danger rounded-3"
+                  type="button"
+                  id="logar-wGoogle"
+                >
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.5265 19 18.4439 16.3923 18.9291 13H13C12.4477 13 12 12.5523 12 12C12 11.4477 12.4477 11 13 11H20C20.5523 11 21 11.4477 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.1424 3 16.1123 3.74979 17.6578 5.00041C18.0871 5.34782 18.1535 5.97749 17.8061 6.40682C17.4587 6.83615 16.829 6.90256 16.3997 6.55515C15.1972 5.58212 13.668 5 12 5Z" fill="#000000"/>
+                    </svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="JS/recursos/Style.js"></script>
+    <script src="JS/recursos/functions.js"></script>
+    <script src="JS/index.js"></script>
+  </body>
+</html>

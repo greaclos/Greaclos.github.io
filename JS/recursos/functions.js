@@ -5581,6 +5581,27 @@
   );
 });
 //
+//Funções auxiliares
+function Reload() {
+  window.location.reload();
+}
+
+function navigate(url) {
+  window.location.href = url;
+}
+
+function configBut() {
+  const divPai = document.querySelector("#configBut");
+
+  divPai.innerHTML += `
+    <span class="float-left">
+      <i class="text-secondary">@${User.username}</i> 
+      <a id="btn-logout" class="btn-link" onclick="logOut()">Sair</a>
+    </span>`;
+}
+
+
+
 
 
 //Criar um elemento html
@@ -5726,7 +5747,7 @@ function criarMenuPerfil(txtOption, onClick_fun, e_Pai) {
   let userID = document.createElement("span");
   userID.setAttribute("class", "mt-0 mb-0 m-2");
 
-  userID.innerHTML = "@username";
+  userID.innerHTML = "@"+User.username;
 
   let aBtn = document.createElement("a");
   aBtn.setAttribute("class", "nav-link dropdown-toggle mt-0 mb-0 m-2");
@@ -5749,396 +5770,21 @@ function criarMenuPerfil(txtOption, onClick_fun, e_Pai) {
 
   PAI.appendChild(ul);
 }
+
 //----------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------
-
-//Controla a visualização das Modals
-//  modal   string  "" - se refera a que Modal vai mudar
-//    valores possiveis: "Entrar"/"Registar"
-//  comand  string  "" - se refera ao tipo de ação a executar
-//    valores: "open","close","troca"
-//Ex. controol_Modal("Entrar","open") -  abre a modal de Login (Entrar)
-function control_Modal(modal, comand) {
-  switch (comand) {
-    case "open":
-      document.getElementById(`button-modal-${modal}`).click();
-      break;
-    case "close":
-      document.getElementById(`modal-close-${modal}`).click();
-      break;
-    case "troca":
-      if (modal == "Entrar") {
-        control_Modal("Entrar", "close");
-        control_Modal("Registar", "open");
-      } else if (modal == "Registar") {
-        control_Modal("Registar", "close");
-        control_Modal("Entrar", "open");
-      }
-      break;
-    default:
-      break;
-  }
-}
-//----------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------
-
-//Components
-
-//Cria as Modals de autenticação (Login e Registo)
-//  mode - se refere ao tipo de Modal ("Entrar"/"Registar")
-function modalAuth(mode) {
-  //Botão de ativação
-  criarElemento(
-    "button",
-    ["id", "type", "class", "data-bs-toggle", "data-bs-target"],
-    [
-      `button-modal-${mode}`,
-      "button",
-      "btn btn-primary visually-hidden",
-      "modal",
-      `#modal-${mode}`,
-    ],
-    "modal"
-  );
-
-  //Modal
-  criarElemento(
-    "div",
-    ["id", "class", "tabindex", "aria-labelledby", "aria-hidden", "role"],
-    [
-      `modal-${mode}`,
-      "modal fade py-5",
-      "-1",
-      `modal${mode}-Label`,
-      "false",
-      "dialog",
-    ],
-    "modal"
-  );
-
-  //Modal Dialog
-  criarElemento(
-    "div",
-    ["id", "class", "role"],
-    [`modal${mode}-dialog`, "modal-dialog", "document"],
-    `modal-${mode}`
-  );
-
-  //Modal Content
-  criarElemento(
-    "div",
-    ["id", "class", "style"],
-    [
-      `modal${mode}-content`,
-      "modal-content rounded-4 shadow",
-      `background-color: ${_tema.backColor}; color:${_tema.textColor};`,
-    ],
-    `modal${mode}-dialog`
-  );
-
-  //Modal Header
-  criarElemento(
-    "div",
-    ["id", "class"],
-    [`modal${mode}-content-header`, "modal-header p-5 pb-4 border-bottom-0"],
-    `modal${mode}-content`
-  );
-
-  //Modal Title
-  criarElementoWText(
-    "h1",
-    ["class"],
-    ["fw-bold mb-0 fs-2"],
-    `modal${mode}-content-header`,
-    "Se inscreva de Graça"
-  );
-
-  //Button Close
-  criarElemento(
-    "button",
-    ["type", "class", "data-bs-dismiss", "aria-label", "id"],
-    ["button", "btn-close", "modal", "Close", `modal-close-${mode}`],
-    `modal${mode}-content-header`
-  );
-
-  //Modal Body
-  criarElemento(
-    "div",
-    ["id", "class"],
-    [`modal${mode}-body`, "modal-body p-5 pt-0"],
-    `modal${mode}-content`
-  );
-
-  //Form
-  criarElemento(
-    "form",
-    ["id", "class"],
-    [`form-${mode}`, ""],
-    `modal${mode}-body`
-  );
-
-  //Exclusivo de Registo
-  if (mode == "Registar") {
-    //Alert
-    criarElemento(
-      "div",
-      ["id", "class"],
-      ["alert-Registar", "w-100"],
-      `form-${mode}`
-    );
-    // Caixa de texto - Nome
-    criarElementoFF(
-      "usernameRg",
-      ["type", "class", "style", "placeholder"],
-      [
-        "text",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "@username",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - Nome
-    criarElementoFF(
-      "nameRg",
-      ["type", "class", "style", "placeholder"],
-      [
-        "text",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "Nome",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - Sobrenome
-    criarElementoFF(
-      "surnameRg",
-      ["type", "class", "style", "placeholder"],
-      [
-        "text",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "Sobrenome",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - email
-    criarElementoFF(
-      "emailRg",
-      ["type", "class", "style", "placeholder"],
-      [
-        "email",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "E-mail",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - Confirmar email
-    criarElementoFF(
-      "c-emailRg",
-      ["type", "class", "style", "placeholder"],
-      [
-        "email",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "Confirmar E-mail",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - Password
-    criarElementoFF(
-      "passwordRg",
-      ["type", "minlength", "class", "style", "placeholder"],
-      [
-        "password",
-        "6",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "Palavra-passe",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - confirmar Password
-    criarElementoFF(
-      "c-passwordRg",
-      ["type", "minlength", "class", "style", "placeholder"],
-      [
-        "password",
-        "6",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "Confiirmar Palavra-passe",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Botão submit
-    criarElementoWText(
-      "button",
-      ["class", "type", "onclick"],
-      [
-        `w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.submit}`,
-        "submit",
-        "register()",
-      ],
-      `form-${mode}`,
-      "Inscrever"
-    );
-
-    //Botão de Entra (trocar)
-    criarElementoWText(
-      "button",
-      ["class", "type", "onclick"],
-      [
-        `w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.secondaryBtn}`,
-        "button",
-        `control_Modal('${mode}', "troca")`,
-      ],
-      `form-${mode}`,
-      "Entrar"
-    );
-
-    //Confirmação de Termos
-    criarElementoWText(
-      "small",
-      ["class"],
-      ["text-muted"],
-      `form-${mode}`,
-      "Clicando em Inscrever, tu aceitas os termos de utilização"
-    );
-  }
-
-  //Exclusivo de Entrar
-  if (mode == "Entrar") {
-    //Alert
-    criarElemento(
-      "div",
-      ["id", "class"],
-      ["alert-Entrar", "w-100"],
-      `form-${mode}`
-    );
-    //Caixa de texto - email
-    criarElementoFF(
-      "emailLg",
-      ["required", "type", "class", "style", "placeholder"],
-      [
-        "",
-        "email",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "E-mail",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Caixa de texto - Password
-    criarElementoFF(
-      "passwordLg",
-      ["required", "type", "minlength", "class", "style", "placeholder"],
-      [
-        "",
-        "password",
-        "6",
-        "form-control",
-        `background-color: ${_tema.form.backText};`,
-        "Palavra-passe",
-      ],
-      `form-${mode}`,
-      3
-    );
-
-    //Botão submit
-    criarElementoWText(
-      "button",
-      ["class", "type", "onclick"],
-      [
-        `w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.submit}`,
-        "submit",
-        "login()",
-      ],
-      `form-${mode}`,
-      "Entrar"
-    );
-
-    //Botão para inscrever (trocar)
-    criarElementoWText(
-      "button",
-      ["class", "type", "onclick"],
-      [
-        `w-100 mb-2 btn btn-lg rounded-3 ${_tema.form.secondaryBtn}`,
-        "button",
-        `control_Modal('${mode}', "troca")`,
-      ],
-      `form-${mode}`,
-      "Inscrever-se"
-    );
-
-    //Recuperar palavra-passe
-    criarElementoWText(
-      "div",
-      ["class", "style", "onclick"],
-      [
-        "text-muted w-100 text-center mt-3",
-        `cursor: pointer;`,
-        "recoverPassword()",
-      ],
-      `form-${mode}`,
-      "<a>Recuperar palavra passe</a>"
-    );
-
-    //Barra divisoria
-    criarElemento("hr", ["class"], ["my-4"], `form-${mode}`);
-
-    //Text another
-    criarElementoWText(
-      "h2",
-      ["class"],
-      ["fs-5 fw-bold mb-3"],
-      `form-${mode}`,
-      "Ou entre com"
-    );
-
-    //Botão Google
-    criarElemento(
-      "button",
-      ["class", "type", "id"],
-      [
-        "w-100 py-2 mb-2 btn btn-outline-danger rounded-3",
-        "button",
-        "logar-wGoogle",
-      ],
-      `form-${mode}`
-    );
-    //Icone Google
-    criarElemento("ion-icon", ["name"], ["logo-google"], `logar-wGoogle`);
-  }
-}
 
 //Cria a barra de Navegção
 //  state   string    //on para caso o utilizador esteja logado
 //                    //off para o caso de não haver ninguem loggado
+
 function navBar(state) {
   //Nav
   criarElemento(
     "nav",
     ["class"],
     [
-      `navbar navbar-expand-md ${_tema.navBar.text} fixed-top ${_tema.navBar.back}`,
+      `navbar navbar-expand-md p-0 ${_tema.navBar.text} fixed-top ${_tema.navBar.back}`,
     ],
     "nav" /* div com id #nav */
   );
@@ -6150,7 +5796,7 @@ function navBar(state) {
   criarElementoWText(
     "a",
     ["class", "href"],
-    ["navbar-brand", "#"],
+    ["navbar-brand", "index.html"],
     "nav > nav > div",
     "Greaclos"
   );
@@ -6200,7 +5846,7 @@ function navBar(state) {
     "navbar-nav me-auto mb-2 mb-md-0",
     ["Home", "Todos Jogos", "Histórico"],
     [`nav-link active`, `nav-link disabled`, `nav-link disabled`],
-    [" ", " "],
+    ["navigate('../index.html')", " "],
     "navbarCollapse"
   );
 
@@ -6304,162 +5950,748 @@ function hideLoading() {
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
+// Jogo da Velha- Tic Tac Toe------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------
-// Jogo da Velha-------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------
-//Funções
-function replay(arg) {
-  for (let num = 1; num < 10; num++) {
-    $(`#ps-${num}`).html("");
-  }
 
-  vez = "X";
-  lastJogada = "";
-  psVez.html(vez);
-  jog_Count = 0;
-  for (let n = 1; n < 10; n++) {
-    $(`#ps-${n}`).css({
-      backgroundColor: "aliceblue",
-    });
-  }
-  line_Win = [0, 0, 0];
-  check_O = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"];
-  check_X = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"];
-  jog_Count = 0;
-
-  if (arg) {
-    $("#Modal-fecho").click();
-  }
-}
-
-function mudarVez() {
-  vez == "X" ? (vez = "O") : (vez = "X");
-  if (vez == "X" && lastJogada == "X") {
-    vez = "O";
-  } else if (vez == "O" && lastJogada == "O") {
-    vez = "X";
-  }
-  psVez.html(vez);
-}
-
-function isWin(nVez) {
-  if (
-    (check_O[1] == nVez && check_O[4] == nVez && check_O[7] == nVez) ||
-    (check_X[1] == nVez && check_X[4] == nVez && check_X[7] == nVez)
-  ) {
-    line_Win = [1, 4, 7];
-    console.log("condição 1");
-    return true;
-  } else if (
-    (check_O[2] == nVez && check_O[5] == nVez && check_O[8] == nVez) ||
-    (check_X[2] == nVez && check_X[5] == nVez && check_X[8] == nVez)
-  ) {
-    line_Win = [2, 5, 8];
-    console.log("condição 2");
-    return true;
-  } else if (
-    (check_O[3] == nVez && check_O[6] == nVez && check_O[9] == nVez) ||
-    (check_X[3] == nVez && check_X[6] == nVez && check_X[9] == nVez)
-  ) {
-    line_Win = [3, 6, 9];
-    console.log("condição 3");
-    return true;
-  } else if (
-    (check_O[1] == nVez && check_O[2] == nVez && check_O[3] == nVez) ||
-    (check_X[1] == nVez && check_X[2] == nVez && check_X[3] == nVez)
-  ) {
-    line_Win = [1, 2, 3];
-    console.log("condição 4");
-    return true;
-  } else if (
-    (check_O[4] == nVez && check_O[5] == nVez && check_O[6] == nVez) ||
-    (check_X[4] == nVez && check_X[5] == nVez && check_X[6] == nVez)
-  ) {
-    line_Win = [4, 5, 6];
-    console.log("condição 5");
-    return true;
-  } else if (
-    (check_O[7] == nVez && check_O[8] == nVez && check_O[9] == nVez) ||
-    (check_X[7] == nVez && check_X[8] == nVez && check_X[9] == nVez)
-  ) {
-    line_Win = [7, 8, 9];
-    console.log("condição 6");
-    return true;
-  } else if (
-    (check_O[3] == nVez && check_O[5] == nVez && check_O[7] == nVez) ||
-    (check_X[3] == nVez && check_X[5] == nVez && check_X[7] == nVez)
-  ) {
-    line_Win = [3, 5, 7];
-    console.log("condição 7");
-    return true;
-  } else if (
-    (check_O[1] == nVez && check_O[5] == nVez && check_O[9] == nVez) ||
-    (check_X[1] == nVez && check_X[5] == nVez && check_X[9] == nVez)
-  ) {
-    line_Win = [1, 5, 9];
-    console.log("condição 8");
-    return true;
-  }
-}
-
-function whatIs(v) {
-  if (isWin(v)) {
-    // alert(v + " Venceu!");
-    line_Win.forEach((position) => {
-      $(`#ps-${position}`).css({
-        backgroundColor: "#97f5a4",
-      });
-    });
-    $("#text-win").html(`Jogador ${v} é o vencedor!`);
-    setTimeout(() => {
-      $("#Modal-win").click();
-    }, [300]);
-  } else if (jog_Count >= 9) {
-    $("#text-win").html(`Ninguém venceu!`);
-    setTimeout(() => {
-      $("#Modal-win").click();
-    }, [300]);
-  }
-}
-
-function jogada(num) {
-  if ($(`#ps-${num}`).html() == "O" || $(`#ps-${num}`).html() == "X") {
-  } else {
-    if (line_Win[0] != 0 && line_Win[1] != 0 && line_Win[2] != 0) {
-    } else {
-      $(`#ps-${num}`).html(vez);
-      vez == "X" ? (check_X[num] = vez) : (check_O[num] = vez);
-      jog_Count++;
-
-      whatIs(vez);
-      lastJogada = vez;
-      mudarVez();
-    }
-  }
-}
-
-//Variaveis
-var vez = "X";
-var check_O = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"];
-var check_X = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"];
-var jog_Count = 0;
-var line_Win = [0, 0, 0];
-var lastJogada = "";
-
-var psVez = $("#ps-vez").html(vez);
-
-//Display
-
-function começarJogo() {
-  $("#Jogo").show();
-}
-
-$(document).ready(function () {
-  // $("#Jogo").hide();
-  $("#Modal-win").hide();
-});
 
 //Jogo da Velha
+//---------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------------  
+//-           --    --          ---         --          ---           --
+//-           --    --    --     --         --    --     --     -     --
+//-   ----------    --    ---    --   --------    --     --    ---    --
+//-   ----------    --    --    ---   --------    -     ---    ---    --
+//-         ----    --         ----       ----         ----    ---    --
+//-         ----    --        -----       ----          ---           --
+//-   ----------    --    -   -----   --------    --     --           --
+//-   ----------    --    --    ---   --------    ---    --    ---    --
+//-   ----------    --    ---   ---   --------    --     --    ---    --
+//-   ----------    --    ---   ---         --          ---    ---    --
+//-   ----------    --    ---   ---         --         ----    ---    --
+//------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+//Valida a autenticação
+//Recebendo os codigos de erro, traduzindo para portugues
+//E criando alertas
+//    code    string    //codigo de erro
+//    who     string    //se refere a pra quem será o alerta, o nome depois de "alert-"
+function validaAuth(code, who) {
+  switch (code) {
+    case "auth/wrong-password":
+      alertar(`alert-${who}`, "Palavra-passe errada!", "danger");
+      console.log("Palavra-passe errada!");
+      break;
+    case "auth/invalid-email":
+      alertar(`alert-${who}`, "Endereço de e-mail não válido!", "danger");
+      console.log("Endereço de e-mail não válido!");
+      break;
+    case "auth/user-disabled":
+      alertar(`alert-${who}`, "Este utilizador foi desabilitado.", "danger");
+      console.log("Este utilizador foi desabilitado.");
+      break;
+    case "auth/user-not-found":
+      alertar(`alert-${who}`, "Utilizador não encontrado.", "danger");
+      console.log("Utilizador não encontrado.");
+      break;
+    case "auth/too-many-requests":
+      alertar(
+        `alert-${who}`,
+        "Devida a atividades suspeitas, deverá tentar de novo em alguns minutos",
+        "danger"
+      );
+      console.log(
+        "Devida a atividades suspeitas, deverá tentar de novo em alguns minutos."
+      );
+      break;
+    case "auth/email-already-in-use":
+      alertar(`alert-${who}`, "Já existe uma conta neste email.", "warning");
+      console.log("Já existe uma conta neste email.");
+      break;
+    case "auth/weak-password":
+      alertar(
+        `alert-${who}`,
+        "Sua palavra passe é muito fraca, tente outra por favor.",
+        "warning"
+      );
+      console.log("Sua palavra passe é muito fraca, tente outra por favor.");
+      break;
+    case "auth/operation-not-allowed":
+      alertar(`alert-${who}`, "A conta neste email foi desativada.", "warning");
+      console.log("A conta neste email foi desativada.");
+      break;
+    default:
+      break;
+  }
+}
+
+//Login
+//Isso é auuto-explicativo, mas tem comentários dentro
+function login() {
+  //Pegar valores do formulario
+  const email = document.getElementById("emailLg").value;
+  const password = document.getElementById("passwordLg").value;
+
+  console.log(email, password);
+  //validar se nenhum dos campos está nulo
+  if (email && password) {
+
+    console.log(firebase)
+    //Faz a requisição de login, passando o email e password como parametros
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        //Caso a requisição seja bem sucedida
+
+        // firebase.firestore().collection('users').where('uid','==',)
+        alertar("Login efetuado com sucesso!", "success");
+
+        console.log(response)
+        document.getElementById("password").value = "";
+        document.getElementById("email").value = "";
+        authLogin()
+      })
+      .catch((error) => {
+        //Caso a requisição dê erro
+
+        //Reseta campo do formulario
+        document.getElementById("password").value = "";
+
+        //Chamada da função validaAuth
+        validaAuth(error.code);
+      });
+  } else {
+    //se email nulo mostra o allerta
+    email ? "" : alertar("O campo email é obrigatório", "warning");
+    //se password nula mostra o allerta
+    password ? "" : alertar("O campo palavra passe é obrigatório", "warning");
+  }
+}
+
+
+//Registo
+//Isso também é auto-eexplicativo, e ainda não tem comeentários dentro, porque ainda não acabei
+function register() {
+  const username = document.getElementById("usernameRg").value;
+  const name = document.getElementById("nameRg").value;
+  const surname = document.getElementById("surnameRg").value;
+  const email = document.getElementById("emailRg").value;
+  const email_conf = document.getElementById("c-emailRg").value;
+  const password = document.getElementById("passwordRg").value;
+  const password_conf = document.getElementById("c-passwordRg").value;
+
+  if (email != email_conf || password != password_conf) {
+    email != email_conf
+      ? alertar(
+          `alert-Registar`,
+          "A confirmaação do email não confere",
+          "danger"
+        )
+      : "";
+    password != password_conf
+      ? alertar(
+          `alert-Registar`,
+          "A confirmaação da password não confere",
+          "danger"
+        )
+      : "";
+  } else {
+    control_Modal("Registar", "close");
+    showLoading();
+
+    // console.log(email, password);
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        hideLoading();
+        window.location.reload(false);
+
+        setTimeout(() => {
+          alert("conta criada com sucesso");
+          control_Modal("Registar", "close");
+        }, [2000]);
+      })
+      .catch((error) => {
+        hideLoading();
+        control_Modal("Registar", "open");
+
+        console.log(error.code);
+        validaAuth(error.code, "Registar");
+      });
+  }
+}
+
+//Recuperar password
+//Oh MAIGODE, pra quê que será isso? (Obviamente estou sendo irónico)
+function recoverPassword() {
+  const email = document.getElementById("emailLg").value;
+
+  if (email) {
+    control_Modal("Entrar", "close");
+    showLoading();
+
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        hideLoading();
+        control_Modal("Entrar", "open");
+
+        alertar(
+          `alert-Entrar`,
+          "Foi enviado para o seu email o link para recuperação. Por favor verifique o Spam",
+          "success"
+        );
+      })
+      .catch((error) => {
+        hideLoading();
+        control_Modal("Entrar", "open");
+
+        console.log(error.code);
+        validaAuth(error.code, "Entrar");
+      });
+  } else {
+    alertar(`alert-Entrar`, "O campo email é obrigatório", "danger");
+    console.log("O campo email é obrigatório");
+  }
+}
+
+//Desisto
+//Essa função aqui faz biscoito
+function logOut() {
+  if (firebase.auth().currentUser) {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        window.location.reload(false);
+      });
+  }
+}
