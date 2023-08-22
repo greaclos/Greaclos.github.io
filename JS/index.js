@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // console.log("inicio");
   initFirebase();
 
+  if (path.includes("games/realtime.html")) return false;
+
   await firebase.auth().onAuthStateChanged(async (user) => {
     if (
       !user &&
@@ -128,6 +130,7 @@ function initFirebase() {
     messagingSenderId: "803467540486",
     appId: "1:803467540486:web:77b4a9140f436b9e91ab87",
     measurementId: "G-GT0JD0E0WV",
+    databaseURL:"https://greaclos-world-default-rtdb.europe-west1.firebasedatabase.app/"
   };
 
   // Initialize Firebase
