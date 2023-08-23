@@ -63,7 +63,7 @@
         width: 100vw;
         height: 100vw;
         margin: 5px auto;
-        color: #fff;
+        color: #dfdfdf;
         display: grid;
         grid-template: repeat(3, 1fr) / repeat(3, 1fr);
       }
@@ -71,9 +71,11 @@
         font-family: Helvetica;
         font-weight: bold;
         font-size: 4em;
+        padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
       }
       .btn {
         border: 5px solid #2c3e50;
@@ -95,13 +97,7 @@
         .game {
           width: 500px;
           height: 500px;
-          /* border-radius: 10px; */
-          /* border: 6px solid #2c3e50; */
         }
-/* 
-        .game > div {
-          border-radius: 2px;
-        } */
       }
 
       @media (min-width: 1024px) {
@@ -110,13 +106,17 @@
         }
       }
 
-      .ps-1, .ps-4, .ps-7{
-        border-right: 10px solid #34495e;
-        border-left: 10px solid #34495e;
+      .ps-1,
+      .ps-4,
+      .ps-7 {
+        border-right: 6px solid #34495e;
+        border-left: 6px solid #34495e;
       }
-      .ps-3, .ps-4, .ps-5{
-        border-top: 10px solid #34495e;
-        border-bottom: 10px solid #34495e;
+      .ps-3,
+      .ps-4,
+      .ps-5 {
+        border-top: 6px solid #34495e;
+        border-bottom: 6px solid #34495e;
       }
     </style>
   </head>
@@ -147,12 +147,12 @@
 
     <div>
       <button
-      class="btn"
-      onclick="navigate('../index.html')"
-      title="Restart this game"
-    >
-      Voltar ao inicio
-    </button>
+        class="btn"
+        onclick="navigate('../index.html')"
+        title="Restart this game"
+      >
+        Voltar ao inicio
+      </button>
       <button
         class="btn"
         onclick="tic_tac_toe.restart()"
@@ -160,6 +160,34 @@
       >
         Restart
       </button>
+    </div>
+
+    <div class="p-2">
+      <button
+        type="button"
+        class="btn btn-primary invisible"
+        id="Modal-win"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+      ></button>
+
+      <!-- Modal -->
+      <div
+        class="modal text-black"
+        id="staticBackdrop"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h4 class="h4 text-center" id="text-win"></h4>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

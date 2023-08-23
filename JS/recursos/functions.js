@@ -5944,9 +5944,7 @@ function hideLoading() {
 
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------------
-// Jogo da Velha- Tic Tac Toe------------------------------------------------------------------------------------------------------------------------------
+// Jogo da Velha- Tic Tac Toe -----------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------
 const tic_tac_toe = {
@@ -5994,19 +5992,23 @@ const tic_tac_toe = {
 
     if (win_sequences_index >= 0) {
       this.game_is_over();
-      this.stylize_winner_sequence(this.win_sequences[win_sequences_index]);
+      this.stylize_winner_sequence(this.win_sequences[win_sequences_index],currentSymbol);
     } else {
       this.symbols.change();
     }
     return true;
   },
 
-  stylize_winner_sequence(winner_sequence) {
+  stylize_winner_sequence(winner_sequence,currentSymbol) {
     winner_sequence.forEach((position) => {
       this.container_element
         .querySelector(`div:nth-child(${position + 1})`)
         .classList.add("winner");
     });
+
+    document.getElementById("text-win").innerHTML = `${currentSymbol} venceu!!!`;
+    document.getElementById("Modal-win").click();
+
   },
 
   game_is_over() {
@@ -6065,11 +6067,125 @@ const tic_tac_toe = {
     this.container_element.innerHTML = this.board
       .map(
         (element, index) =>
-          `<div class="ps-${index} ps" style="" onclick="tic_tac_toe.make_play('${index}')"> ${element} </div>`
+          `<div class="ps-${index} ps" onclick="tic_tac_toe.make_play('${index}')">${element}</div>`
       )
       .reduce((content, current) => content + current);
   },
 };
+
+
+// Database
+const game_database = {};
+
+(() => {
+  let game_id = false;
+
+  function new_game(player1, player2, board) {
+    const game_data = {
+      player1: player1,
+      player2: player2,
+      board: board,
+      gameover: false,
+      createdat: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    if (!game_id) {
+      game_id = firebase.database().ref().child("games").push().key;
+    }
+
+    let updates = {};
+    updates["/games/" + game_id] = game_data;
+
+    let game_ref = firebase.database().ref();
+
+    game_ref
+      .update(updates)
+      .then(() => {
+        return { success: true, message: "Game created" };
+      })
+      .catch((error) => {
+        return { success: false, message: "Creation failed: ", error };
+      });
+  }
+
+  function remove_game() {
+    if (!game_id) return { success: false, message: "Invalid Game " };
+
+    let game_ref = firebase.database().ref("/games/" + game_id);
+
+    game_ref
+      .remove()
+      .then(() => {
+        return { success: true, message: "Game removed" };
+      })
+      .catch((error) => {
+        return { success: false, message: "Remove failed: ", error };
+      });
+  }
+
+  function update_game(board) {
+    if (!game_id) return { success: false, message: "Invalid Game " };
+
+    let game_ref = firebase.database().ref("/games/" + game_id);
+
+    let updates = {};
+    updates["/board"] = board;
+    updates["/lastupdate"] = firebase.database.ServerValue.TIMESTAMP;
+
+    game_ref
+      .update(updates)
+      .then(() => {
+        return { success: true, message: "Game updated" };
+      })
+      .catch((error) => {
+        return { success: false, message: "Update failed: ", error };
+      });
+  }
+
+  function reset_game() {
+    if (!game_id) return { success: false, message: "Invalid Game " };
+
+    game_id = false;
+    return { success: true, message: "Game reset" };
+  }
+
+  async function listen_game() {
+    if (!game_id) return { success: false, message: "Invalid Game " };
+
+    let game_ref = firebase.database().ref("/games/" + game_id);
+
+    game_ref
+      .once("child_changed")
+      .then((snapshot) => {
+        //Board
+        if (snapshot.key == "board") {
+          console.log("Board Changed", snapshot.val());
+          return {
+            success: true,
+            message: "Board updated",
+            data: snapshot.val(),
+          };
+          //gameOver
+        } else if (snapshot.key == "gameover") {
+          console.log("Game Over", snapshot.val());
+          return {
+            success: true,
+            message: "Game Over",
+            data: snapshot.val(),
+          };
+        }
+      })
+      .catch((error) => {
+        return { success: false, message: "Invalid data: ", error };
+      });
+  }
+
+  game_database.new = new_game;
+  game_database.remove = remove_game;
+  game_database.update = update_game;
+  game_database.reset = reset_game;
+  game_database.listen = listen_game;
+})();
 
 //Jogo da Velha
 //---------------------------------------------------------------------------------------------------------------------------------------------
