@@ -33,7 +33,6 @@ function startData() {
 }
 
 function startTTT() {
-
   let divs = document.querySelectorAll(".ps");
   divs.forEach((element) => {
     // console.log(element)
@@ -59,10 +58,28 @@ function startTTT() {
 
   tic_tac_toe.init(document.querySelector(".game"));
   tic_tac_toe.start();
-  game_database.new(player1,player2,tic_tac_toe.board)
+  game_database.new(player1, player2, tic_tac_toe.board);
 }
 
 //-------------------------------------------------------------------------------------
+
+/* document.addEventListener(visibilityChange, (e) => {
+  setTimeout(async () => {
+    // console.log(visibilityChange);
+    await firebase
+      .firestore()
+      .collection("users")
+      .where("uid", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(async (userData) => {
+        const dados = await userData.docs.map((doc) => doc.data());
+        dados.forEach((element) => {
+          element.onLine = false;
+        });
+      });
+  }, 10000);
+}); */
+
 document.addEventListener("DOMContentLoaded", async () => {
   // console.log("inicio");
   initFirebase();
@@ -80,7 +97,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       if (path.includes("login.html")) authLogin();
 
-      console.log(user.uid);
+      // console.log(user.uid);
+      console.log(firebase.auth().currentUser.uid);
 
       await firebase
         .firestore()
@@ -89,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .get()
         .then(async (userData) => {
           const dados = await userData.docs.map((doc) => doc.data());
-          // console.log(dados);
+          console.log(dados);
           dados.forEach((element) => {
             User.nome = element.nome + " " + element.sobrenome;
             User.username = element.username;
@@ -97,7 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           });
 
           if (path.includes("index.html")) {
-            console.log(User);
+            // console.log(User);
+            
             navBar("on");
           }
 

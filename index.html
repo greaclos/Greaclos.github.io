@@ -67,7 +67,7 @@
               <h6 class="card-subtitle mb-2 text-muted">2 participantes</h6>
               <p class="card-text">Descrição do jogo da velha</p>
               <a
-                onclick="document.getElementById('Modal-create-room').click()"
+                onclick="openModalGame('Tic Tac Toe',2,'/games/tictactoe.html?')"
                 style="cursor: pointer"
                 class="card-link"
                 >Jogar</a
@@ -119,46 +119,19 @@
         class="btn btn-primary invisible"
         id="Modal-create-room"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target="#createroomdrop"
       ></button>
 
       <!-- Modal -->
       <div
         class="modal text-black"
-        id="staticBackdrop"
+        id="createroomdrop"
         data-bs-keyboard="false"
         tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
+        aria-labelledby="createroomdropLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-          <div class="modal-content">
-            <div class="modal-body">
-              <h4 class="h4 text-center" id="title-create-room"></h4>
-              <form>
-                <div class="mb-3">
-                  <label for="escolher-amigo" class="form-label"
-                    >Escolher amigo</label
-                  ><br />
-                  <select
-                    name="escolher-amigo"
-                    class="form-select"
-                    id="escolher-amigo"
-                  >
-                    <option value=""></option>
-                  </select>
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onclick="navigate('/games/tictactoe.html?player1=Mateus&player2=Luis')"
-                >
-                  Criar
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+       
       </div>
     </div>
 
