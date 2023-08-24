@@ -33,9 +33,6 @@ function startData() {
 }
 
 function startTTT() {
-  tic_tac_toe.init(document.querySelector(".game"));
-  tic_tac_toe.start();
-
   let divs = document.querySelectorAll(".ps");
   divs.forEach((element) => {
     // console.log(element)
@@ -50,9 +47,39 @@ function startTTT() {
       // console.log(e.target);
     });
   });
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const player1 = urlParams.get("player1");
+  const player2 = urlParams.get("player2");
+
+  console.log("player1:", player1);
+  console.log("player2:", player2);
+
+  tic_tac_toe.init(document.querySelector(".game"));
+  tic_tac_toe.start();
+  game_database.new(player1, player2, tic_tac_toe.board);
 }
 
 //-------------------------------------------------------------------------------------
+
+/* document.addEventListener(visibilityChange, (e) => {
+  setTimeout(async () => {
+    // console.log(visibilityChange);
+    await firebase
+      .firestore()
+      .collection("users")
+      .where("uid", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(async (userData) => {
+        const dados = await userData.docs.map((doc) => doc.data());
+        dados.forEach((element) => {
+          element.onLine = false;
+        });
+      });
+  }, 10000);
+}); */
+
 document.addEventListener("DOMContentLoaded", async () => {
   // console.log("inicio");
   initFirebase();
@@ -70,7 +97,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       if (path.includes("login.html")) authLogin();
 
-      console.log(user.uid);
+      // console.log(user.uid);
+      console.log(firebase.auth().currentUser.uid);
 
       await firebase
         .firestore()
@@ -79,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .get()
         .then(async (userData) => {
           const dados = await userData.docs.map((doc) => doc.data());
-          // console.log(dados);
+          console.log(dados);
           dados.forEach((element) => {
             User.nome = element.nome + " " + element.sobrenome;
             User.username = element.username;
@@ -87,7 +115,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           });
 
           if (path.includes("index.html")) {
-            console.log(User);
+            // console.log(User);
+            
             navBar("on");
           }
 
@@ -130,7 +159,8 @@ function initFirebase() {
     messagingSenderId: "803467540486",
     appId: "1:803467540486:web:77b4a9140f436b9e91ab87",
     measurementId: "G-GT0JD0E0WV",
-    databaseURL:"https://greaclos-world-default-rtdb.europe-west1.firebasedatabase.app/"
+    databaseURL:
+      "https://greaclos-world-default-rtdb.europe-west1.firebasedatabase.app/",
   };
 
   // Initialize Firebase

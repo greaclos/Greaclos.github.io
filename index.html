@@ -66,7 +66,12 @@
               <h5 class="card-title">TIC TAC TOE</h5>
               <h6 class="card-subtitle mb-2 text-muted">2 participantes</h6>
               <p class="card-text">Descrição do jogo da velha</p>
-              <a href="games/tictactoe.html" class="card-link">Jogar</a>
+              <a
+                onclick="openModalGame('Tic Tac Toe',2,'/games/tictactoe.html?')"
+                style="cursor: pointer"
+                class="card-link"
+                >Jogar</a
+              >
             </div>
           </div>
 
@@ -106,6 +111,28 @@
       </div>
 
       <div class="col-lg-2 bg-secondary" id="pernson_dta">Personal Data</div>
+    </div>
+
+    <div class="p-2">
+      <button
+        type="button"
+        class="btn btn-primary invisible"
+        id="Modal-create-room"
+        data-bs-toggle="modal"
+        data-bs-target="#createroomdrop"
+      ></button>
+
+      <!-- Modal -->
+      <div
+        class="modal text-black"
+        id="createroomdrop"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="createroomdropLabel"
+        aria-hidden="true"
+      >
+       
+      </div>
     </div>
 
     <!-- My Js -->
