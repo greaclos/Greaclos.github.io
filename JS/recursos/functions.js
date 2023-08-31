@@ -1,3 +1,171 @@
+/* Style */
+const _tema = {
+  backColor: "#fff",
+  textColor: "#000",
+  form: {
+    backText: "#fff",
+    colorText: "#000",
+    submit: "bg-primary text-light",
+    secondaryBtn: "bg-light",
+  },
+  navBar: {
+    back: "bg-black",
+    text: "navbar-dark",
+  },
+};
+/* --------------------------------------------------------------- */
+
+/* My Room */
+const myRoom = {
+  async modalCreateRoom(game) {
+    const modal = document.querySelector("#createroomdrop");
+
+    const optionSelect = async () => {
+      const amigosUid = await firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "==", User.uid)
+        .get()
+        .then(async (userData) => {
+          const dados = await userData.docs.map((doc) => doc.data());
+          let arr = [];
+          dados.forEach((element) => {
+            element.amigos.forEach((e) => {
+              arr.push(e);
+            });
+          });
+          return arr;
+        });
+      // console.log(amigosUid);
+
+      const fin = await firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "in", amigosUid)
+        .get()
+        .then(async (userData) => {
+          const dados = await userData.docs.map((doc) => doc.data());
+          let text = "";
+          let usernames = [];
+          let txtArr = "[";
+          let index = 1;
+          dados.forEach((element) => {
+            text += `<input type="checkbox" value="${
+              element.username
+            }" class="btn-check w-100 m-1 amigo-selected" id="btn-check-${index}-outlined">
+            <label class="btn btn-outline-secondary w-100 m-1 btn-check-${index}-outlined" for="btn-check-${index}-outlined">
+            ${element.nome + " " + element.sobrenome}</label><br/>`;
+
+            usernames.push(element.username);
+            index++;
+          });
+
+          for (i in usernames) {
+            if (i < usernames.length - 1) txtArr += `'${usernames[i]}',`;
+            else if (i == usernames.length - 1) txtArr += `'${usernames[i]}']`;
+          }
+
+          console.log(txtArr);
+
+          return { components: text, users: txtArr };
+        });
+
+      return await fin;
+    };
+
+    const OPSEL = await optionSelect();
+    // console.log(OPSEL);
+
+    modal.innerHTML = ` 
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h4 class="h4 text-center" id="title-create-room">Criar Sala ${
+            game.name
+          }</h4>
+          <p class="text-center">Limite de participantes: +${game.numL - 1}</p>
+          <form>
+            <div class="mb-3">
+              <label for="escolher-amigo" class="form-label"
+                >Escolher amigo${game.numL > 2 ? "s" : ""}</label
+              ><br />
+              <div
+                id="escolher-amigo"
+              >
+                ${OPSEL.components}
+                </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="myRoom.createRoom(${game.numL - 1},'${game.url}',[${
+      OPSEL.users
+    }])"
+            >
+              Criar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>`;
+  },
+
+  createRoom(numL, url, plys) {
+    const amigos = document.querySelectorAll(".amigo-selected");
+    let selecionados = 0;
+    let amigosSelecionados = [];
+    let urlUsrname = "";
+    let index = 0;
+
+    amigos.forEach((amigo) => {
+      if (amigo.checked) {
+        selecionados++;
+        amigosSelecionados.push(amigo);
+      }
+    });
+
+    if (selecionados !== numL) {
+      alertar("alert", "Selecione o numero certo de jogadores", "warning");
+      console.log("Selecione o numero certo de jogadores");
+      return false;
+    }
+
+    let num = amigosSelecionados.length + 1;
+
+    urlUsrname += `npl=${num}&ply_${index}=${User.username}`;
+    index++;
+
+    for (i in amigosSelecionados) {
+      if (index >= 1) urlUsrname += "&";
+
+      urlUsrname += `ply_${index}=${amigosSelecionados[i].value}`;
+      // console.log(urlUsrname);
+      // console.log(i);
+      index++;
+    }
+
+    navigate(url + urlUsrname);
+  },
+
+  openModalGame(name, nLim, url) {
+    this.modalCreateRoom({
+      name: name,
+      numL: nLim,
+      url: url,
+    });
+    setTimeout(() => {
+      document.getElementById("Modal-create-room").click();
+    }, 500);
+  },
+};
+
+/*  */
+const checkPLYonRoom = () =>{
+
+}
+/*  */
+
+/*  */
 //Funções auxiliares
 var hidden, visibilityChange;
 if (typeof document.hidden !== "undefined") {
@@ -33,146 +201,10 @@ function configBut() {
     </span>`;
 }
 
-async function modalCreateRoom(game) {
-  const modal = document.querySelector("#createroomdrop");
-
-  async function optionSelect() {
-    const amigosUid = await firebase
-      .firestore()
-      .collection("users")
-      .where("uid", "==", User.uid)
-      .get()
-      .then(async (userData) => {
-        const dados = await userData.docs.map((doc) => doc.data());
-        let arr = [];
-        dados.forEach((element) => {
-          element.amigos.forEach((e) => {
-            arr.push(e);
-          });
-        });
-        return arr;
-      });
-    // console.log(amigosUid);
-
-    const fin = await firebase
-      .firestore()
-      .collection("users")
-      .where("uid", "in", amigosUid)
-      .get()
-      .then(async (userData) => {
-        const dados = await userData.docs.map((doc) => doc.data());
-        let text = "";
-        let usernames = [];
-        let txtArr = "[";
-        let index = 1;
-        dados.forEach((element) => {
-          text += `<input type="checkbox" value="${
-            element.username
-          }" class="btn-check w-100 m-1 amigo-selected" id="btn-check-${index}-outlined">
-          <label class="btn btn-outline-secondary w-100 m-1 btn-check-${index}-outlined" for="btn-check-${index}-outlined">
-          ${element.nome + " " + element.sobrenome}</label><br/>`;
-
-          usernames.push(element.username);
-          index++;
-        });
-
-        for (i in usernames) {
-          if (i < usernames.length - 1) txtArr += `'${usernames[i]}',`;
-          else if (i == usernames.length - 1) txtArr += `'${usernames[i]}']`;
-        }
-
-        console.log(txtArr);
-
-        return { components: text, users: txtArr };
-      });
-
-    return await fin;
-  }
-
-  const OPSEL = await optionSelect();
-  // console.log(OPSEL);
-
-  modal.innerHTML = ` 
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h4 class="h4 text-center" id="title-create-room">Criar Sala ${
-          game.name
-        }</h4>
-        <p class="text-center">Limite de participantes: +${game.numL - 1}</p>
-        <form>
-          <div class="mb-3">
-            <label for="escolher-amigo" class="form-label"
-              >Escolher amigo${game.numL > 2 ? "s" : ""}</label
-            ><br />
-            <div
-              id="escolher-amigo"
-            >
-              ${OPSEL.components}
-              </div>
-          </div>
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="createRoom(${game.numL - 1},'${game.url}',[${
-    OPSEL.users
-  }])"
-          >
-            Criar
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>`;
+function conlog(value, ref) {
+  console.log(value, ref);
 }
-
-function createRoom(numL, url, plys) {
-  const amigos = document.querySelectorAll(".amigo-selected");
-  let selecionados = 0;
-  let amigosSelecionados = [];
-  let urlUsrname = "";
-  let index = 0;
-
-  amigos.forEach((amigo) => {
-    if (amigo.checked) {
-      selecionados++;
-      amigosSelecionados.push(amigo);
-    }
-  });
-
-  if (selecionados !== numL) {
-    alertar("alert", "Selecione o numero certo de jogadores", "warning");
-    console.log("Selecione o numero certo de jogadores");
-    return false;
-  }
-
-  let num = amigosSelecionados.length + 1;
-
-  urlUsrname += `npl=${num}&ply_${index}=${User.username}`;
-  index++;
-
-  for (i in amigosSelecionados) {
-    if (index >= 1) urlUsrname += "&";
-
-    urlUsrname += `ply_${index}=${amigosSelecionados[i].value}`;
-    // console.log(urlUsrname);
-    // console.log(i);
-    index++;
-  }
-
-  navigate(url + urlUsrname);
-}
-
-function openModalGame(name, nLim, url) {
-  modalCreateRoom({
-    name: name,
-    numL: nLim,
-    url: url,
-  });
-  setTimeout(() => {
-    document.getElementById("Modal-create-room").click();
-  }, 500);
-}
+/* --------------------------------------------------------------------- */
 
 //Criar um elemento html
 //  nome -      string ""           //Nome do elemento a ser criado
@@ -873,7 +905,7 @@ function login() {
         //Caso a requisição seja bem sucedida
 
         // firebase.firestore().collection('users').where('uid','==',)
-        alertar("Login efetuado com sucesso!", "success");
+        alertar("alert","Login efetuado com sucesso!", "success");
 
         console.log(response);
         document.getElementById("password").value = "";
@@ -891,9 +923,9 @@ function login() {
       });
   } else {
     //se email nulo mostra o allerta
-    email ? "" : alertar("O campo email é obrigatório", "warning");
+    email ? "" : alertar("alert","O campo email é obrigatório", "warning");
     //se password nula mostra o allerta
-    password ? "" : alertar("O campo palavra passe é obrigatório", "warning");
+    password ? "" : alertar("alert","O campo palavra passe é obrigatório", "warning");
   }
 }
 

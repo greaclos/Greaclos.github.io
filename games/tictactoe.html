@@ -159,6 +159,7 @@
             text-align: justify;
             font-size: 16px;
           "
+          id="ply_list_on"
         >
           <li>Fulano <span class="text-danger fs-5">off</span></li>
           <li>Paulano <span class="text-danger fs-5">off</span></li>
@@ -168,7 +169,7 @@
           id="link"
           class="btn btn-primary text-center"
           style="display: flex; margin-top: 20rem; font-size: 16px"
-          onclick="navigator.clipboard.writeText(this.value).then(() => {alertar('Copiado!', 'success')})"
+          onclick="navigator.clipboard.writeText(this.value).then(() => {alertar('alert','Copiado!', 'success');checkPLYonRoom()})"
         >
           Copiar link
         </button>

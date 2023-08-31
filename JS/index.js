@@ -49,9 +49,11 @@ function startTTT() {
   });
 
   const urlParams = new URLSearchParams(window.location.search);
-
+  const ply_list = document.querySelector('#ply_list_on')
   const num_ply = urlParams.get("npl");
   const players = [];
+
+  
 
   for (let idx = 0; idx < num_ply; idx++) {
     players.push(urlParams.get("ply_" + idx));
@@ -173,7 +175,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function hevaAccess() {
   const urlParams = new URLSearchParams(window.location.search);
-
+  const num_ply = urlParams.get("npl");
   let have_Access = false;
 
   for (let idx = 0; idx < num_ply; idx++) {
