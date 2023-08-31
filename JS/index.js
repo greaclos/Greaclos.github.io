@@ -50,15 +50,52 @@ function startTTT() {
 
   const urlParams = new URLSearchParams(window.location.search);
 
-  const player1 = urlParams.get("player1");
-  const player2 = urlParams.get("player2");
+  const num_ply = urlParams.get("npl");
+  const players = [];
 
-  console.log("player1:", player1);
-  console.log("player2:", player2);
+  for (let idx = 0; idx < num_ply; idx++) {
+    players.push(urlParams.get("ply_" + idx));
+  }
+
+  for (let idx = 0; idx < num_ply; idx++) {
+    console.log("player" + idx + ":", players[idx]);
+  }
+
+  let tela = document.querySelector(".game");
+
+  // tela.innerHTML=``
+
+  let button = document.querySelector("#action-game");
+  button.classList.add("btnn");
+  button.setAttribute("onclick", `startGame()`);
+  button.setAttribute("title", `Start this game`);
+  button.innerHTML = "Start";
 
   tic_tac_toe.init(document.querySelector(".game"));
   tic_tac_toe.start();
+}
+
+function startGame() {
+  let button = document.querySelector("#action-game");
+  button.classList.add("btn");
+  button.setAttribute("onclick", `tic_tac_toe.restart()`);
+  button.setAttribute("title", `Restart this game`);
+  button.innerHTML = "Restart";
+
+  tic_tac_toe.draw(tic_tac_toe.board);
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const player1 = urlParams.get("ply_0");
+  const player2 = urlParams.get("ply_1");
+
   game_database.new(player1, player2, tic_tac_toe.board);
+  game_database.listen();
+}
+
+function playOnLine() {
+  game_database.listen();
+  game_database.update(player1, player2, tic_tac_toe.board);
 }
 
 //-------------------------------------------------------------------------------------
@@ -92,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       !path.includes("login.html" || !path.includes("register.html"))
     ) {
       if (path.includes("register.html")) {
-      } else navigate("login.html");
+      } else navigate("/login.html");
       //   console.log(window.location.href);
     } else {
       if (path.includes("login.html")) authLogin();
@@ -114,11 +151,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             User.uid = element.uid;
           });
 
-          if (path.includes("index.html")) {
+          if (path.includes("index.html") || path.includes("denied.html")) {
             // console.log(User);
-            
+
             navBar("on");
           }
+
+          if (path.includes("/tictactoe.html?npl")) hevaAccess();
 
           if (path.includes("games/tictactoe.html")) startTTT();
 
@@ -131,6 +170,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+function hevaAccess() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  let have_Access = false;
+
+  for (let idx = 0; idx < num_ply; idx++) {
+    if (User.username == urlParams.get("ply_" + idx)) {
+      have_Access = true;
+    }
+  }
+
+  if (!have_Access) navigate("/denied.html");
+}
 
 function authLogin() {
   // console.log("Login in");

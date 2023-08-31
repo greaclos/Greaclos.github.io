@@ -66,7 +66,9 @@ async function modalCreateRoom(game) {
         let txtArr = "[";
         let index = 1;
         dados.forEach((element) => {
-          text += `<input type="checkbox" value="${element.username}" class="btn-check w-100 m-1 amigo-selected" id="btn-check-${index}-outlined">
+          text += `<input type="checkbox" value="${
+            element.username
+          }" class="btn-check w-100 m-1 amigo-selected" id="btn-check-${index}-outlined">
           <label class="btn btn-outline-secondary w-100 m-1 btn-check-${index}-outlined" for="btn-check-${index}-outlined">
           ${element.nome + " " + element.sobrenome}</label><br/>`;
 
@@ -128,6 +130,8 @@ function createRoom(numL, url, plys) {
   const amigos = document.querySelectorAll(".amigo-selected");
   let selecionados = 0;
   let amigosSelecionados = [];
+  let urlUsrname = "";
+  let index = 0;
 
   amigos.forEach((amigo) => {
     if (amigo.checked) {
@@ -137,19 +141,26 @@ function createRoom(numL, url, plys) {
   });
 
   if (selecionados !== numL) {
+    alertar("alert", "Selecione o numero certo de jogadores", "warning");
     console.log("Selecione o numero certo de jogadores");
     return false;
   }
 
-  amigos.forEach((amigo) => {
-    if (amigo.checked) {
-      console.log(amigo.value);
-    }
-  });
+  let num = amigosSelecionados.length + 1;
 
-  let urlUsrname = "";
+  urlUsrname += `npl=${num}&ply_${index}=${User.username}`;
+  index++;
 
-  // navigate(url + urlUsrname);
+  for (i in amigosSelecionados) {
+    if (index >= 1) urlUsrname += "&";
+
+    urlUsrname += `ply_${index}=${amigosSelecionados[i].value}`;
+    // console.log(urlUsrname);
+    // console.log(i);
+    index++;
+  }
+
+  navigate(url + urlUsrname);
 }
 
 function openModalGame(name, nLim, url) {
@@ -545,7 +556,10 @@ const tic_tac_toe = {
     const currentSymbol = this.symbols.options[this.symbols.turn_index];
 
     this.board[position] = currentSymbol;
-    this.draw();
+
+    this.draw(this.board);
+    game_database.update(this.board, false);
+    game_database.listen();
 
     const win_sequences_index = this.check_win_sequences(currentSymbol);
 
@@ -580,7 +594,13 @@ const tic_tac_toe = {
 
   game_is_over() {
     this.gameover = true;
-    console.log("GAME OVER");
+    game_database.update(this.board, true);
+
+    // console.log("GAME OVER");
+
+    setTimeout(() => {
+      game_database.remove();
+    }, 5000);
   },
 
   is_game_over() {
@@ -589,21 +609,27 @@ const tic_tac_toe = {
 
   start() {
     this.board.fill("");
-    this.draw();
+    // this.draw();
     this.gameover = false;
+
+    const urlParams = window.location;
+    document.querySelector("#link").setAttribute("value", `${urlParams}`);
   },
 
   restart() {
     if (this.is_board_empty(this.board)) {
-      console.log("A board está vazia");
+      // console.log("A board está vazia");
+      alertar("alert", "A board está vazia", "warning");
       return false;
     }
 
     if (this.is_game_over() || this.gameover) {
       this.start();
+      this.draw(this.board);
       console.log("this game has been restarted!");
     } else if (confirm("Are you sure you want to restart this game?")) {
       this.start();
+      this.draw(this.board);
       console.log("this game has been restarted!");
     }
   },
@@ -630,8 +656,8 @@ const tic_tac_toe = {
   },
 
   //Desenha na tela o jogo
-  draw() {
-    this.container_element.innerHTML = this.board
+  draw(board) {
+    this.container_element.innerHTML = board
       .map(
         (element, index) =>
           `<div class="ps-${index} ps" onclick="tic_tac_toe.make_play('${index}')">${element}</div>`
@@ -656,11 +682,11 @@ const game_database = {};
     };
 
     if (!game_id) {
-      game_id = firebase.database().ref().child("games").push().key;
+      game_id = firebase.database().ref().child("tictactoe").push().key;
     }
 
     let updates = {};
-    updates["/games/" + game_id] = game_data;
+    updates["/tictactoe/" + game_id] = game_data;
 
     let game_ref = firebase.database().ref();
 
@@ -677,7 +703,7 @@ const game_database = {};
   function remove_game() {
     if (!game_id) return { success: false, message: "Invalid Game " };
 
-    let game_ref = firebase.database().ref("/games/" + game_id);
+    let game_ref = firebase.database().ref("/tictactoe/" + game_id);
 
     game_ref
       .remove()
@@ -689,14 +715,15 @@ const game_database = {};
       });
   }
 
-  function update_game(board) {
+  function update_game(board, gameover) {
     if (!game_id) return { success: false, message: "Invalid Game " };
 
-    let game_ref = firebase.database().ref("/games/" + game_id);
+    let game_ref = firebase.database().ref("/tictactoe/" + game_id);
 
     let updates = {};
     updates["/board"] = board;
     updates["/lastupdate"] = firebase.database.ServerValue.TIMESTAMP;
+    updates["/gameover"] = gameover;
 
     game_ref
       .update(updates)
@@ -718,7 +745,7 @@ const game_database = {};
   async function listen_game() {
     if (!game_id) return { success: false, message: "Invalid Game " };
 
-    let game_ref = firebase.database().ref("/games/" + game_id);
+    let game_ref = firebase.database().ref("/tictactoe/" + game_id);
 
     game_ref
       .once("child_changed")
@@ -726,6 +753,8 @@ const game_database = {};
         //Board
         if (snapshot.key == "board") {
           console.log("Board Changed", snapshot.val());
+          update_game(snapshot.val, tic_tac_toe.gameover);
+          tic_tac_toe.draw(snapshot.val);
           return {
             success: true,
             message: "Board updated",

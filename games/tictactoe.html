@@ -77,12 +77,13 @@
         align-items: center;
         cursor: pointer;
       }
-      .btn {
+      .btnn {
         border: 5px solid #2c3e50;
         background-color: #34495e;
         color: white;
         margin-top: 10px;
         padding: 10px 20px;
+        border-radius: 5px;
       }
 
       .game > div.winner {
@@ -101,7 +102,7 @@
       }
 
       @media (min-width: 1024px) {
-        .btn {
+        .btnn {
           cursor: pointer;
         }
       }
@@ -132,6 +133,9 @@
       align-items: center;
     "
   >
+    <!-- Alert -->
+    <div id="alert" class="mt-5"></div>
+
     <!-- Loading -->
     <div id="loading"></div>
 
@@ -143,23 +147,43 @@
 
     <!-- Conteúdo -->
 
-    <div class="game"></div>
+    <div class="game">
+      <div class="d-flex text-center" style="width: 28rem; text-align: end">
+        <h2>Esperando jogadores</h2>
+        <br />
+        <ul
+          class="w-100"
+          style="
+            width: 28rem;
+            margin-top: 10rem;
+            text-align: justify;
+            font-size: 16px;
+          "
+        >
+          <li>Fulano <span class="text-danger fs-5">off</span></li>
+          <li>Paulano <span class="text-danger fs-5">off</span></li>
+          <li>Cicrano <span class="text-danger fs-5">off</span></li>
+        </ul>
+        <button
+          id="link"
+          class="btn btn-primary text-center"
+          style="display: flex; margin-top: 20rem; font-size: 16px"
+          onclick="navigator.clipboard.writeText(this.value).then(() => {alertar('Copiado!', 'success')})"
+        >
+          Copiar link
+        </button>
+      </div>
+    </div>
 
     <div>
       <button
-        class="btn"
+        class="btnn"
         onclick="navigate('../index.html')"
         title="Restart this game"
       >
         Voltar ao inicio
       </button>
-      <button
-        class="btn"
-        onclick="tic_tac_toe.restart()"
-        title="Restart this game"
-      >
-        Restart
-      </button>
+      <button id="action-game"></button>
     </div>
 
     <div class="p-2">
