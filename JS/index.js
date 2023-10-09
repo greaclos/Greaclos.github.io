@@ -48,20 +48,8 @@ function startTTT() {
     });
   });
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const ply_list = document.querySelector('#ply_list_on')
-  const num_ply = urlParams.get("npl");
-  const players = [];
+  online_list.gett()
 
-  
-
-  for (let idx = 0; idx < num_ply; idx++) {
-    players.push(urlParams.get("ply_" + idx));
-  }
-
-  for (let idx = 0; idx < num_ply; idx++) {
-    console.log("player" + idx + ":", players[idx]);
-  }
 
   let tela = document.querySelector(".game");
 

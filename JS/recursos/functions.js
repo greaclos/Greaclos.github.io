@@ -160,11 +160,39 @@ const myRoom = {
 };
 
 /*  */
-const checkPLYonRoom = () =>{
-
-}
+const checkPLYonRoom = () => {};
 /*  */
+const online_list = {
 
+  gett() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ply_list = document.querySelector("#ply_list_on");
+    const num_ply = urlParams.get("npl");
+    const players = [];
+
+    alertar("alert", "selecione a caixa na vrente de seu username", "info");
+    for (let idx = 0; idx < num_ply; idx++) {
+      players.push(urlParams.get("ply_" + idx));
+      let span = document.createElement("span");
+      let li = document.createElement("li");
+
+      span.classList.add("text-danger");
+      span.classList.add("fs-5");
+
+      if (urlParams.get("ply_" + idx) === User.username)
+        span.innerHTML = `<input type="checkbox" class="form-check-input" onchange="" id="check_on_${urlParams.get(
+          "ply_" + idx
+        )}">`;
+
+      li.innerHTML = urlParams.get("ply_" + idx) + "... ";
+      li.appendChild(span);
+
+      ply_list.appendChild(li);
+    }
+
+    conlog(players, "functions.js:" + 192);
+  },
+};
 /*  */
 //Funções auxiliares
 var hidden, visibilityChange;
@@ -905,7 +933,7 @@ function login() {
         //Caso a requisição seja bem sucedida
 
         // firebase.firestore().collection('users').where('uid','==',)
-        alertar("alert","Login efetuado com sucesso!", "success");
+        alertar("alert", "Login efetuado com sucesso!", "success");
 
         console.log(response);
         document.getElementById("password").value = "";
@@ -923,9 +951,11 @@ function login() {
       });
   } else {
     //se email nulo mostra o allerta
-    email ? "" : alertar("alert","O campo email é obrigatório", "warning");
+    email ? "" : alertar("alert", "O campo email é obrigatório", "warning");
     //se password nula mostra o allerta
-    password ? "" : alertar("alert","O campo palavra passe é obrigatório", "warning");
+    password
+      ? ""
+      : alertar("alert", "O campo palavra passe é obrigatório", "warning");
   }
 }
 
