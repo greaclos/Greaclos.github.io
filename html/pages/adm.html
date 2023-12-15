@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
 
     <!-- BootStrap Js -->
     <script
@@ -21,7 +22,6 @@
     />
 
     <!-- Firebase -->
-
     <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
 
     <script
@@ -29,42 +29,44 @@
       type="module"
       src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"
     ></script>
+
     <script
       defer
       type="module"
       src="https://www.gstatic.com/firebasejs/9.13.0/firebase-firestore-compat.js"
     ></script>
 
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-analytics.js"></script> -->
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-database-compat.js"
+    ></script>
+
+    <script
+      defer
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.13.0/firebase-storage-compat.js"
+    ></script>
 
     <!-- My Css -->
-    <link rel="stylesheet" href="CSS/global.css" />
-    <link rel="stylesheet" href="CSS/to_med_screen.css" />
-
-    <title>Greaclos</title>
+    <link rel="stylesheet" href="../../css/global.css" />
+    <!-- <link rel="stylesheet" href="../../css/" /> -->
   </head>
-
-  <body class="bg-black" style="color: #cccdb5">
-    <!-- Alert -->
-    <div id="alert" class="mt-5 "></div>
-
-    <!-- Loading -->
-    <div id="loading"></div>
-
-    <!-- Modal -->
-    <div id="modal"></div>
-
+  <body>
     <!-- Barra de Navegação -->
     <div id="nav"></div>
 
     <!-- Conteúdo -->
-    <div style="height:70vh; padding-top: 10rem;" class=" mt-5 text-center">
-      <h1 class="h1" style="font-size: 72px;">Denied Access!!</h1>
-      <p>Você não pertence a esta sala</p>
-    </div>
+    <div id="conteudo" class="mt-5"></div>
+
+    <!-- Modal -->
+    <div id="modal"></div>
+
+    <!-- Alert -->
+    <div id="alert"></div>
+
     <!-- My Js -->
-    <script src="JS/recursos/Style.js"></script>
-    <script src="JS/recursos/functions.js"></script>
-    <script src="JS/index.js"></script>
+    <script src="../../js/global.js"></script>
+    <script src="../../js/pages/adm.js"></script>
   </body>
 </html>
