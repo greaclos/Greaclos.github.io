@@ -1907,7 +1907,7 @@ const DataB = {
     //ex ref ["users",User.uid,"new_chat"]
     const db = firebase.database();
 
-    console.log(User.username);
+    // console.log(User.username);
     const dbRe = db.ref(main);
 
     const dbRef = ref ? dbRe.child(ref) : dbRe;
@@ -1968,7 +1968,7 @@ const DataB = {
     let done = await dbRef.update(data).then(() => {
       return true;
     });
-    console.log(done);
+    // console.log(done);
     return done;
   },
 
@@ -1976,6 +1976,8 @@ const DataB = {
     const db = firebase.database();
 
     const dbRef = db.ref(`${game}/${room}/players`);
+    this.set(`tictactoe/${room.name}/start`, false);
+    await Store.updateDoc("rooms", room.id, { room_created: false });
 
     let playrs = [];
     let newList = [];
@@ -1999,7 +2001,17 @@ const DataB = {
     return done;
   },
 
-  async delete(collection, doc) {},
+  async remove(ref) {
+    const db = firebase.database();
+
+    const dbRef = db.ref(ref);
+
+    let done = await dbRef.remove().then(() => {
+      return true;
+    });
+    // console.log(done);
+    return done;
+  },
 };
 
 const Storage = {
@@ -2119,10 +2131,10 @@ const _aux = {
 
   async checkChangeState(isAdm) {
     // definição de variaveis
-    const game_pages = ["tictactoe", "paocom", "ovo"];
+    const game_pages = ["tictactoe", "paocom"];
     let isGamePage = false;
     let idxIni, idxFin, page;
-    let l_page = "";
+    let lst_page = "";
 
     for (i = Url.path.length; i >= 0; i--) {
       if (Url.path[i] == ".") {
@@ -2135,7 +2147,7 @@ const _aux = {
       // console.log(idxFin);
     }
 
-    page = _aux.sliceTxt(Url.path, idxIni, idxFin);
+    page = Url.path.slice(idxIni, idxFin);
 
     /* Page configs */
     User.theme == "dark" ? theme.setDarkTheme() : theme.setLightTheme();
@@ -2241,15 +2253,18 @@ const _aux = {
 
     // check last Page
     setTimeout(async () => {
-      l_page = await DataB.last_page();
+      lst_page = await DataB.last_page();
       // console.log(l_page);
-      if (l_page.includes("games/")) {
-        let rn_game = _aux.sliceTxt(l_page, "room=");
+      if (lst_page.includes("games/")) {
+        let rn_game = _aux.sliceTxt(lst_page, "room=");
 
         game_pages.forEach(async (game) => {
-          if (l_page.includes(game)) {
-            if (await DataB.sair_da_sala(game, rn_game))
+          // console.log(game, lst_page);
+          if (lst_page.includes(game)) {
+            if (await DataB.sair_da_sala(game, rn_game)) {
               _aux.alertar("Saiu do Jogo", "info");
+              await DataB.set("users/" + User.username + "/last_page", "");
+            }
           }
         });
       }
@@ -2374,6 +2389,8 @@ const game_dataB = {};
     //nome tem que ser unico
     const room_data = {
       players: [User.username],
+      symbols: ["X","O"],
+      start: false,
       max_ply: ply_max,
       createdat: firebase.database.ServerValue.TIMESTAMP,
     };
@@ -2399,7 +2416,7 @@ const game_dataB = {};
     return game_id;
   }
 
-  function start_game(game, room_name, board, gameover) {
+  function start_game(game, room_name, board, gameover,turn) {
     //Começa o jogo com a configuração da board recebida por parametro
 
     game_id = room_name;
@@ -2407,6 +2424,8 @@ const game_dataB = {};
 
     let updates = {};
     updates["/board"] = board;
+    updates["/turn"] = turn;
+    updates["/winner"] = false;
     updates["/lastupdate"] = firebase.database.ServerValue.TIMESTAMP;
     updates["/gameover"] = gameover;
 

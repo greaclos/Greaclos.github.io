@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         <button 
             id="btn-action"
             class="btnn sus" 
-            onclick="tic_tac_toe.start()" 
             title="Começar jogo"
             style="width:10rem"
         >
@@ -88,6 +87,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await Store.setRoomAct(room.id);
 
+  document.getElementById("btn-action").addEventListener("click", () => {
+    let op = [true, false];
+    DataB.set(`tictactoe/${room.name}/start`, op[0]);
+  });
+
   let isIn_room = false,
     isIn_db = false;
 
@@ -110,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       dados.push(player);
       player == User.username ? (isIn_db = true) : "";
     });
+
     if (isIn_room) {
       if (!isIn_db) {
         tic_tac_toe.preStart(room);
@@ -119,6 +124,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   }
+
+  const startRef = firebase.database().ref(`tictactoe/${room.name}/start`);
+
+  startRef.on("value", async (snapshot) => {
+    // se
+    if (snapshot.val()) tic_tac_toe.start();
+  });
 
   //
 });
@@ -186,12 +198,24 @@ const tic_tac_toe = {
     this.init();
     this.gameover = false;
 
+    // definição da ref gameover na db
     const gameoverRef = firebase
       .database()
       .ref(`tictactoe/${this.room}/gameover`);
+
+    // definição da ref winner na db
+    const winnerRef = firebase.database().ref();
+
+    // definição da ref mesa na db
     const boardRef = firebase.database().ref(`tictactoe/${this.room}/board`);
 
-    game_dataB.start(RoomsFB.game, RoomsFB.name, this.board, this.gameover);
+    game_dataB.start(
+      RoomsFB.game,
+      RoomsFB.name,
+      this.board,
+      this.gameover,
+      this.symbols.options[this.symbols.turn_index]
+    );
 
     RoomsFB.state_game = "started";
     Store.updateDoc("rooms", RoomsFB.id, RoomsFB);
@@ -200,12 +224,23 @@ const tic_tac_toe = {
       // se board mudar
       this.board = snapshot.val();
       this.draw(this.board);
-      //   console.log("Mudou", snapshot.val());
-      console.log("board", this.board);
+      // console.log("Mudou", snapshot.val());
+      // console.log("board", this.board);
     });
 
-    gameoverRef.on("value", (snapshot) => {
+    gameoverRef.on("value", async (snapshot) => {
       // se board mudar
+      let haveWinner = await DataB.get_once(`tictactoe`, `${this.room}/winner`);
+
+      if (snapshot.val() == true) {
+        if (haveWinner) {
+          // tem um vencedor
+          this.stylize_winner_sequence(
+            this.win_sequences[win_sequences_index],
+            currentSymbol
+          );
+        }
+      }
       console.log("Game Over", snapshot.val());
     });
 
@@ -222,7 +257,6 @@ const tic_tac_toe = {
 
   //Desenha na tela o jogo
   draw(board) {
-
     this.container_element.innerHTML = "";
 
     // console.log("desenho");
@@ -240,7 +274,7 @@ const tic_tac_toe = {
 
     this.board[position] = currentSymbol;
 
-    DataB.update(`tictactoe/${RoomsFB.name}/board`, this.board);
+    // verifica sequencia vencedora
     const win_sequences_index = this.check_win_sequences(currentSymbol);
 
     if (this.is_game_over()) {
@@ -256,7 +290,10 @@ const tic_tac_toe = {
     } else {
       this.symbols.change();
     }
-    return true;
+
+    // envia a informação para cima
+    DataB.update(`tictactoe/${RoomsFB.name}/board`, this.board);
+    DataB.update(`tictactoe/${RoomsFB.name}/turn`, currentSymbol);
   },
 
   stylize_winner_sequence(winner_sequence, currentSymbol) {
@@ -274,7 +311,9 @@ const tic_tac_toe = {
 
   game_is_over() {
     this.gameover = true;
+    // envia inf para cima
     DataB.set(`tictactoe/${this.room}/gameover`, true);
+    return;
   },
 
   is_game_over() {
@@ -282,8 +321,8 @@ const tic_tac_toe = {
   },
 
   restart() {
-    for(i in this.board){
-        this.board[i] = ""
+    for (i in this.board) {
+      this.board[i] = "";
     }
 
     if (this.is_game_over() || this.gameover) {
@@ -308,5 +347,4 @@ const tic_tac_toe = {
     }
     return -1;
   },
-
 };
