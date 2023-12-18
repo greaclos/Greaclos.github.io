@@ -2253,7 +2253,7 @@ const _aux = {
           }
         });
       }
-    }, 3000);
+    }, 5000);
   },
 
   //Cria os alestas dentro de divs
