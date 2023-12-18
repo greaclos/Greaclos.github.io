@@ -131,7 +131,7 @@ function adm_games() {
     _html.elemento("tbody", [""], [""], "tableJogos > table");
 
     gamesList.forEach((game) => {
-      console.log(game);
+      // console.log(game);
       _html.elemento(
         "tr",
         ["class"],
@@ -170,10 +170,10 @@ function adm_Users() {
     ],
     "conteudo",
     `
-    <form class="d-flex bg-secondary" style="color:${Theme.textColor}">
+    <div class="d-flex bg-secondary" style="color:${Theme.textColor}">
       <input class="form-control me-2 m-2" type="search" style="background-color:${Theme.textColor}" placeholder="Perquisar" aria-label="Search">
-      <button class="btn m-2" type="submit" style="background-color:${Theme.textColor}" title="Perquisar">Perquisar</button>
-    </form>
+      <button class="btn m-2" type="button" style="background-color:${Theme.textColor}" title="Perquisar">Perquisar</button>
+    </div>
     <span id="tableUsers" class="d-block bg-dark" style="color:${Theme.textColor}"></span>
     `
   );
@@ -182,8 +182,8 @@ function adm_Users() {
     let index = 0;
 
     setTimeout(async () => {
-      console.log("Uid", User.uid == "");
-      console.log("Uid", User.id);
+      // console.log("Uid", User.uid == "");
+      // console.log("Uid", User.id);
 
       const usersList = await Store.getCollection(
         "users",
@@ -220,7 +220,7 @@ function adm_Users() {
       _html.elemento("tbody", [""], [""], "tableUsers > table");
 
       usersList.forEach((user) => {
-        console.log("user", user);
+        // console.log("user", user);
         _html.elemento(
           "tr",
           ["class"],
@@ -231,7 +231,9 @@ function adm_Users() {
         <td>${user.nome + " " + user.sobrenome}</td>
         <td id="${user.username}">${user.adm ? "Sim" : "Não"}</td>
         <td><button class="btn w-100 btn-primary btn-sm" 
-          onclick="mudarEstado('${user.id}')"
+          onclick="mudarEstado('${user.id}')" style="${
+            user.adm ? "background-color:#922" : "background-color:#292"
+          }; border:none"
           >Mudar Estado</button></td>
       `
         );
@@ -250,8 +252,12 @@ async function mudarEstado(user_id) {
   // console.log('userUp',userUp)
 
   if (Store.updateDoc("users", user_id, userUp)) {
-    _aux.alertar("Estado mudado", "info");
-    document.querySelector(`#${userUp.username}`).innerHTML =
-      stats == true ? "Sim" : "Não";
+    document.querySelector(`#tableUsers`).innerHTML = "";
+    adm_Users();
+
+    setTimeout(()=>{
+      _aux.alertar("Estado mudado", "info");
+    },2000)
+
   }
 }

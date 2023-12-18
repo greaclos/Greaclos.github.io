@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   auth_page_check()
   
-  setTimeout(() => {
-    editPerfil();
-  }, 8000);
+  // setTimeout(() => {
+  //   editPerfil();
+  // }, 8000);
 
   setTimeout(() => {
     showPerfil();
@@ -40,11 +40,11 @@ function showPerfil() {
                  User.dataNascimento[2]
                }</p>
           </div>
-          <div class="col mt-5">
+          <div class="col mt-5" id="dados-da-conta">
               <h2>Dados da conta</h2>
               <p>Email: ${firebase.auth().currentUser.email}</p>
               <p>Password: *********</p>
-              <button class="btn btn-light btn-sm float-end">Editar</button>  
+              <button class="btn btn-light btn-sm float-end" onclick="editPerfil()">Editar</button>  
           </div>
       </div>
     </div>
@@ -86,9 +86,18 @@ function editPerfil() {
               <h2>Dados da conta</h2>
               <p>Email: ${firebase.auth().currentUser.email}</p>
               <p>Password: *********</p>
-              <button class="btn btn-light btn-sm float-end">Editar</button>  
+              <button class="btn btn-primary btn-sm float-end m-1" onclick="guardar()">Guardar</button>  
+              <button class="btn btn-light btn-sm float-end m-1" onclick="showPerfil()">Cancelar</button>  
           </div>
       </div>
     </div>
   `);
+}
+
+
+function guardar(){
+
+  // ------------
+  _aux.alertar("Alterações guardadas","success")
+  showPerfil()
 }
