@@ -1976,6 +1976,8 @@ const DataB = {
     const db = firebase.database();
 
     const dbRef = db.ref(`${game}/${room}/players`);
+    this.set(`tictactoe/${room.name}/start`, false);
+    await Store.updateDoc("rooms", room.id, { room_created: false });
 
     let playrs = [];
     let newList = [];
@@ -2387,6 +2389,8 @@ const game_dataB = {};
     //nome tem que ser unico
     const room_data = {
       players: [User.username],
+      symbols: ["X","O"],
+      start: false,
       max_ply: ply_max,
       createdat: firebase.database.ServerValue.TIMESTAMP,
     };
@@ -2412,7 +2416,7 @@ const game_dataB = {};
     return game_id;
   }
 
-  function start_game(game, room_name, board, gameover) {
+  function start_game(game, room_name, board, gameover,turn) {
     //Começa o jogo com a configuração da board recebida por parametro
 
     game_id = room_name;
@@ -2420,6 +2424,8 @@ const game_dataB = {};
 
     let updates = {};
     updates["/board"] = board;
+    updates["/turn"] = turn;
+    updates["/winner"] = false;
     updates["/lastupdate"] = firebase.database.ServerValue.TIMESTAMP;
     updates["/gameover"] = gameover;
 
